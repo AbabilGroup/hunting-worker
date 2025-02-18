@@ -5,7 +5,7 @@ import { ImageFrameBorder } from "@/animation/imageframeborder";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-[calc(100vh-6rem)] flex items-center overflow-hidden">
+    <section className="relative min-h-[calc(100vh-6rem)] flex items-center overflow-hidden py-8 sm:py-12 lg:py-0">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Image - Right Side */}
@@ -18,7 +18,8 @@ const Hero = () => {
               "max-w-[280px] xs:max-w-[350px] sm:max-w-[450px] md:max-w-[550px] lg:max-w-[600px]",
               "aspect-square",
               "mx-auto",
-              "order-1 lg:order-2"
+              "order-1 lg:order-2",
+              "mt-2 sm:mt-4 lg:mt-0" // Added margin top for mobile and tablet views
             )}
           >
             <ImageFrameBorder />
