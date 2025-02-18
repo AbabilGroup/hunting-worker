@@ -27,8 +27,8 @@ const HomeEmploy = () => {
   ];
 
   return (
-    <section className="py-8 sm:py-12">
-      <div className="container mx-auto px-4 sm:px-6">
+    <section className="py-8 sm:py-12 w-full overflow-x-hidden">
+      <div className="container mx-auto px-4 sm:px-6 relative">
         {/* Content and Image Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Image Container */}

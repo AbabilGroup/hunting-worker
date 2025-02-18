@@ -67,7 +67,7 @@ const Navbar = () => {
       )}
     >
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-20 relative">
           {/* Logo */}
           <Link href="/" className="font-bold flex items-center">
             <div className="relative w-[100px] h-[40px] sm:w-[120px] sm:h-[40px] md:w-[140px] md:h-[50px]">
@@ -116,14 +116,18 @@ const Navbar = () => {
           </motion.button>
 
           {/* Mobile Menu */}
-          <div className="md:hidden">
+          <div className="md:hidden absolute right-0 top-1/2 -translate-y-1/2">
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Menu className="h-8 w-8" />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="p-2 hover:bg-gray-100"
+                >
+                  <Menu className="h-7 w-7 text-gray-700" />
                 </Button>
               </SheetTrigger>
-              <SheetContent className="flex flex-col h-full w-[350px]">
+              <SheetContent className="flex flex-col h-full w-[280px] sm:w-[350px]">
                 <VisuallyHidden>
                   <SheetTitle>Navigation Menu</SheetTitle>
                 </VisuallyHidden>
