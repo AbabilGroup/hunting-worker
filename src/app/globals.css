@@ -74,8 +74,15 @@ body {
   }
 }
 
+
 @layer utilities {
   .mix-blend-difference {
     mix-blend-mode: difference;
+  }
+
+  @media (hover: none) and (pointer: coarse) {
+    * {
+      cursor: auto !important;
+    }
   }
 }

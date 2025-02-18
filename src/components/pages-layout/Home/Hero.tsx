@@ -19,7 +19,7 @@ const Hero = () => {
               "aspect-square",
               "mx-auto",
               "order-1 lg:order-2",
-              "mt-2 sm:mt-4 lg:mt-0" // Added margin top for mobile and tablet views
+              "mt-2 lg:mt-0"
             )}
           >
             <ImageFrameBorder />

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
 import {
   Sheet,
@@ -16,6 +16,38 @@ import { VisuallyHidden } from "@/components/ui/visually-hidden";
 
 const Navbar = () => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const controlNavbar = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY === 0 || currentScrollY < lastScrollY) {
+        setIsVisible(true);
+      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsVisible(false);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    let timeoutId: NodeJS.Timeout;
+    const throttledControlNavbar = () => {
+      if (timeoutId) return;
+
+      timeoutId = setTimeout(() => {
+        controlNavbar();
+        timeoutId = undefined as unknown as NodeJS.Timeout;
+      }, 50);
+    };
+
+    window.addEventListener("scroll", throttledControlNavbar);
+
+    return () => {
+      window.removeEventListener("scroll", throttledControlNavbar);
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [lastScrollY]);
 
   const navItems = [
     { label: "Home", href: "/" },
@@ -27,8 +59,12 @@ const Navbar = () => {
   return (
     <motion.nav
       initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      className="fixed w-full top-0 z-50 bg-white shadow-sm"
+      animate={{ y: isVisible ? 0 : -100 }}
+      transition={{ duration: 0.3 }}
+      className={cn(
+        "fixed w-full top-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm",
+        "transition-transform duration-300"
+      )}
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
@@ -84,10 +120,10 @@ const Navbar = () => {
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon">
-                  <Menu className="h-6 w-6" />
+                  <Menu className="h-8 w-8" />
                 </Button>
               </SheetTrigger>
-              <SheetContent className="flex flex-col h-full w-[280px] sm:w-[350px]">
+              <SheetContent className="flex flex-col h-full w-[350px]">
                 <VisuallyHidden>
                   <SheetTitle>Navigation Menu</SheetTitle>
                 </VisuallyHidden>
