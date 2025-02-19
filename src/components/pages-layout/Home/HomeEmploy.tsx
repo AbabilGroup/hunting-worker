@@ -35,7 +35,6 @@ const HomeEmploy = () => {
           <div className="order-1 lg:order-2 mb-8 lg:mb-0">
             <CardContainer className="w-full !p-0" containerClassName="!py-0">
               {" "}
-              {/* Added containerClassName */}
               <CardBody className="relative w-full aspect-[16/9] rounded-lg overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-red-300/60 to-red-400/70">
                   <Image
