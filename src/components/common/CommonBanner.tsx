@@ -65,7 +65,7 @@ const CommonBanner = ({
                   "text-xs xs:text-sm sm:text-base md:text-lg",
                   "leading-relaxed",
                   "max-w-full sm:max-w-[90%]",
-                  "mt-2 sm:mt-3"
+                  "mt-6 sm:mt-8 md:mt-10" // Updated margin top values
                 )}
               >
                 {subtitle}
