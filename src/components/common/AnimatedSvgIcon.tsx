@@ -13,7 +13,6 @@ const AnimatedSvgIcon: React.FC<AnimatedSvgIconProps> = ({
 }) => {
   const [svgContent, setSvgContent] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const fetchSvg = async () => {
@@ -30,30 +29,23 @@ const AnimatedSvgIcon: React.FC<AnimatedSvgIconProps> = ({
 
         // Enhanced SVG cleanup
         svg = svg
-          // Remove existing styles
-          .replace(/<style.*?<\/style>/gs, "")
-          .replace(/style=".*?"/g, "")
-          // Remove existing classes
-          .replace(/class=".*?"/g, "")
-          // Remove fill attributes
-          .replace(/fill=".*?"/g, "")
-          // Remove stroke attributes
-          .replace(/stroke=".*?"/g, "")
-          .replace(/stroke-width=".*?"/g, "")
-          // Add vector-effect to prevent scaling issues
+          .replace(/<style[^>]*>[\s\S]*?<\/style>/g, "")
+          .replace(/style="[^"]*"/g, "")
+          .replace(/class="[^"]*"/g, "")
+          .replace(/fill="[^"]*"/g, "")
+          .replace(/stroke="[^"]*"/g, "")
+          .replace(/stroke-width="[^"]*"/g, "")
           .replace(
-            /(<(?:path|circle|line|polyline|rect).*?)(\/?>)/g,
+            /(<(?:path|circle|line|polyline|rect)[^>]*?)(\/?>)/g,
             '$1 vector-effect="non-scaling-stroke"$2'
           );
 
         setSvgContent(svg);
-        setIsLoaded(true);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load SVG");
       }
     };
 
-    setIsLoaded(false);
     fetchSvg();
   }, [iconSrc]);
 
@@ -87,9 +79,9 @@ const AnimatedSvgIcon: React.FC<AnimatedSvgIconProps> = ({
         :global(polyline),
         :global(rect) {
           stroke-dasharray: 1000;
-          stroke-dashoffset: ${isLoaded ? 1000 : 0};
+          stroke-dashoffset: 1000;
           fill: none;
-          animation: ${isLoaded ? "draw 2s ease-in-out forwards" : "none"};
+          animation: draw 2s ease-in-out forwards;
         }
 
         @keyframes draw {

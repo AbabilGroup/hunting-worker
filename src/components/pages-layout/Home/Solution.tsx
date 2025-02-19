@@ -5,6 +5,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from "@/components/ui/carousel";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
@@ -75,7 +76,7 @@ const Solution = () => {
 
       intervalRef.current = setInterval(() => {
         api.scrollNext();
-      }, 2000); // 2 seconds interval
+      }, 4000); // 2 seconds interval
     };
 
     // Start autoplay
