@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://connect-europe.vercel.app"),
-  title: "Hunting Jobs",
+  title: "Hunting Worker - Agency for Employment",
   description: "We connect the right workers with the right employers.",
   keywords:
     "job, jobs, work, employment, employer, employee, career, hiring, recruitment, recruitment agency, job hunting, job search, job board, job site, job listing, job application, job vacancy, job opening, job opportunity, job offer ",
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "/",
-    title: "Hunting Jobs",
+    title: "Hunting Worker - Agency for Employment",
     description: "We connect the right workers with the right employers.",
     siteName: "Hunting Jobs",
     images: [
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Hunting Jobs",
+    title: "Hunting Worker - Agency for Employment",
     description: "We connect the right workers with the right employers.",
     images: [
       {

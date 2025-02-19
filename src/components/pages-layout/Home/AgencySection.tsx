@@ -26,17 +26,20 @@ export default function AgencySection() {
   ];
 
   return (
-    <section className="pt-8 lg:pt-24">
+    <section className="pt-10 ">
       <div className="container mx-auto px-4 py-8 sm:py-12 lg:py-20 max-w-7xl">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
-          {/* Icons Section - Always on top for mobile */}
+          {/* Icons Section */}
           <div className="relative order-1 lg:order-1 grid grid-cols-2 gap-4 w-full max-w-md mx-auto">
             {/* Top row - Two cards side by side */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, scale: 0.5 }}
+              whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.3 }}
+              transition={{
+                duration: 0.5,
+                ease: [0.4, 0, 0.2, 1],
+              }}
               className="aspect-square bg-primary flex items-center justify-center p-6 sm:p-8"
             >
               <Building2
@@ -46,10 +49,14 @@ export default function AgencySection() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, scale: 0.5 }}
+              whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: 0.1 }}
+              transition={{
+                duration: 0.5,
+                delay: 0.15,
+                ease: [0.4, 0, 0.2, 1],
+              }}
               className="aspect-square bg-primary flex items-center justify-center p-6 sm:p-8 -mt-4 sm:-mt-8"
             >
               <Users2
@@ -60,10 +67,14 @@ export default function AgencySection() {
 
             {/* Bottom row - Centered card */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, scale: 0.5 }}
+              whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: 0.2 }}
+              transition={{
+                duration: 0.5,
+                delay: 0.3,
+                ease: [0.4, 0, 0.2, 1],
+              }}
               className="col-span-2 aspect-square bg-primary flex items-center justify-center p-6 sm:p-8 w-1/2 -mt-10 sm:-mt-14 ml-16 sm:ml-24"
             >
               <Filter
@@ -75,8 +86,8 @@ export default function AgencySection() {
 
           {/* Content Section */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             className="space-y-6 sm:space-y-8 order-2 lg:order-2 mt-8 lg:mt-0"
@@ -112,10 +123,13 @@ export default function AgencySection() {
                   <AnimatePresence initial={false}>
                     {openItem === index && (
                       <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
+                        initial={{ opacity: 0, height: 0, y: -20 }}
+                        animate={{ opacity: 1, height: "auto", y: 0 }}
+                        exit={{ opacity: 0, height: 0, y: -20 }}
+                        transition={{
+                          duration: 0.3,
+                          ease: "easeInOut",
+                        }}
                         className="overflow-hidden"
                       >
                         <div className="pb-2 sm:pb-3 lg:pb-4 text-xs sm:text-sm lg:text-base text-gray-500">

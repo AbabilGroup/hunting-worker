@@ -27,15 +27,14 @@ const HomeEmploy = () => {
   ];
 
   return (
-    <section className="py-8 sm:py-12 w-full overflow-x-hidden">
+    <section className="py-8 sm:py-14 w-full overflow-x-hidden">
       <div className="container mx-auto px-4 sm:px-6 relative">
         {/* Content and Image Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Image Container */}
-          <div className="order-1 lg:order-2 mb-8 lg:mb-0">
+          <div className="order-1 lg:order-2 mb-8 lg:mb-0 max-w-[300px] sm:max-w-full mx-auto">
             <CardContainer className="w-full !p-0" containerClassName="!py-0">
-              {" "}
-              <CardBody className="relative w-full aspect-[16/9] rounded-lg overflow-hidden">
+              <CardBody className="relative w-full aspect-[4/3] sm:aspect-[16/9] rounded-lg overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-red-300/60 to-red-400/70">
                   <Image
                     src="/employ-1.png"
@@ -82,7 +81,7 @@ const HomeEmploy = () => {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 relative mt-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 relative mt-14">
           {stats.map((stat, index) => (
             <React.Fragment key={index}>
               <motion.div
@@ -100,7 +99,7 @@ const HomeEmploy = () => {
                   damping: 12,
                 }}
                 className={cn(
-                  "p-6",
+                  "p-4",
                   "bg-white shadow-sm",
                   "relative",
                   "hover:shadow-lg transition-all duration-300",

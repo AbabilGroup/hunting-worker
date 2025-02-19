@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 interface CursorDotProps {
   $isCursorHovering: boolean;
-  $cursorStyle: "default" | "pointer" | "text";
+  $cursorStyle: "default" | "pointer" | "text" | "drag";
 }
 
 const CursorDot = styled.div<CursorDotProps>`
@@ -23,6 +23,7 @@ const CursorDot = styled.div<CursorDotProps>`
       : "scale(1)"};
 `;
 
+// Update the CursorCircle styled component
 const CursorCircle = styled.div<CursorDotProps>`
   width: 40px;
   height: 40px;
@@ -37,13 +38,42 @@ const CursorCircle = styled.div<CursorDotProps>`
       ? "scale(1.5)"
       : props.$cursorStyle === "text"
       ? "scale(1.8)"
+      : props.$cursorStyle === "drag"
+      ? "scale(2)" // Reduced scale for drag
       : "scale(1)"};
   opacity: ${(props) =>
     props.$cursorStyle === "pointer"
       ? "0.5"
       : props.$cursorStyle === "text"
       ? "0.4"
+      : props.$cursorStyle === "drag"
+      ? "0.15" // Reduced opacity for drag
       : "0.2"};
+  background-color: ${(props) =>
+    props.$cursorStyle === "drag" ? "hsl(var(--primary))" : "transparent"};
+  border-color: ${(props) =>
+    props.$cursorStyle === "drag" ? "hsl(var(--primary))" : "#404044"};
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 8px;
+    height: 2px;
+    background-color: hsl(var(--primary));
+    display: ${(props) => (props.$cursorStyle === "drag" ? "block" : "none")};
+  }
+
+  &::before {
+    left: 4px;
+    transform: translateY(-50%) rotate(135deg);
+  }
+
+  &::after {
+    right: 4px;
+    transform: translateY(-50%) rotate(-135deg);
+  }
 `;
 
 const CustomCursor: React.FC = () => {
@@ -51,7 +81,7 @@ const CustomCursor: React.FC = () => {
   const circleRef = useRef<HTMLDivElement>(null);
   const [isTouchDevice, setIsTouchDevice] = React.useState(false);
   const [cursorStyle, setCursorStyle] = React.useState<
-    "default" | "pointer" | "text"
+    "default" | "pointer" | "text" | "drag"
   >("default");
 
   useEffect(() => {
@@ -83,10 +113,16 @@ const CustomCursor: React.FC = () => {
         }
       };
 
+      // Update the handleMouseOver function in the useEffect
       const handleMouseOver = (e: MouseEvent) => {
         const target = e.target as HTMLElement;
 
         if (
+          target.closest(".carousel-card") ||
+          target.closest(".embla__container")
+        ) {
+          setCursorStyle("drag");
+        } else if (
           target.tagName === "INPUT" ||
           target.tagName === "TEXTAREA" ||
           target.getAttribute("contenteditable") === "true" ||
