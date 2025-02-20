@@ -25,66 +25,63 @@ const CommonBanner = ({
     offset: ["start end", "end start"],
   });
 
-  const opacity = useTransform(scrollYProgress, [0, 0.4], [0, 1]);
-  const y = useTransform(scrollYProgress, [0, 0.5], [75, 0]);
+  
+  const opacity = useTransform(scrollYProgress, [0, 0.3], [0, 1]);
+  const y = useTransform(scrollYProgress, [0, 0.5], [200, 0]); 
+  const scale = useTransform(scrollYProgress, [0, 0.5], [0.9, 1]); 
 
   return (
-    <div className="flex justify-center w-full py-12"> 
-      <div
-        ref={containerRef}
+    <div className="flex justify-center w-full py-14 md:py-28 " ref={containerRef}>
+      <motion.div
+        style={{ 
+          opacity, 
+          y,
+          scale,
+          transformOrigin: "center bottom"
+        }}
+        transition={{ 
+          duration: 0.8,
+          ease: [0.16, 1, 0.3, 1] 
+        }}
         className={cn(
           "relative w-[90%] bg-primary overflow-hidden", 
           "rounded-xl",
-          "min-h-[25vh]", 
+          "min-h-[35vh]", 
           "flex items-center",
+          "transform-gpu", 
+          "perspective-1000", 
           className
         )}
       >
-        <div className="w-full px-8 py-10 sm:px-10 sm:py-12"> 
+        <div className="w-full px-8 py-12 sm:px-10 sm:py-16 md:py-20"> {/* Increased internal padding */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-8 sm:gap-10">
             
-            <motion.div
-              style={{ opacity, y }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-              className="w-full sm:w-2/3 space-y-3"
-            >
-              <motion.h1
-                className={cn(
-                  "font-bold text-white",
-                  "text-lg sm:text-2xl md:text-3xl lg:text-4xl",
-                  "leading-tight"
-                )}
-              >
+            <div className="w-full sm:w-2/3 space-y-3">
+              <h1 className={cn(
+                "font-bold text-white",
+                "text-lg sm:text-2xl md:text-3xl lg:text-4xl",
+                "leading-tight"
+              )}>
                 {title}
-              </motion.h1>
+              </h1>
               {subtitle && (
-                <motion.div
-                  style={{ opacity, y }}
-                  transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
-                  className={cn(
-                    "text-white/90",
-                    "text-sm sm:text-base md:text-lg",
-                    "leading-relaxed"
-                  )}
-                >
+                <div className={cn(
+                  "text-white/90",
+                  "text-sm sm:text-base md:text-lg",
+                  "leading-relaxed"
+                )}>
                   {subtitle}
-                </motion.div>
+                </div>
               )}
-            </motion.div>
+            </div>
 
             {/* Button Container  */}
             {buttonText && (
-              <motion.div
-                style={{ opacity, y }}
-                transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
-                className="w-full sm:w-auto shrink-0"
-              >
-                <motion.button
+              <div className="w-full sm:w-auto shrink-0">
+                <button
                   onClick={onButtonClick}
                   onMouseEnter={() => setIsHovered(true)}
                   onMouseLeave={() => setIsHovered(false)}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
                   className={cn(
                     "w-full sm:w-auto",
                     "px-6 sm:px-8",
@@ -110,12 +107,12 @@ const CommonBanner = ({
                   >
                     <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                   </motion.div>
-                </motion.button>
-              </motion.div>
+                </button>
+              </div>
             )}
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

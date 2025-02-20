@@ -5,6 +5,7 @@ import Navbar from "@/components/common/Navbar";
 import { cn } from "@/lib/utils";
 import CustomCursor from "@/components/common/CustomCursor";
 import ArrowUpButton from "@/components/common/ArrowUpButton";
+import Footer from "@/components/common/Footer";
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
@@ -15,6 +16,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         {children}
         <ArrowUpButton />
       </main>
+      <Footer />
     </div>
   );
 };
