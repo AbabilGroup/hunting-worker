@@ -76,13 +76,11 @@ const Solution = () => {
 
       intervalRef.current = setInterval(() => {
         api.scrollNext();
-      }, 4000); // 2 seconds interval
+      }, 4000);
     };
 
-    // Start autoplay
     autoplay();
 
-    // Reset interval on user interaction
     api.on("select", autoplay);
     api.on("pointerDown", () => {
       if (intervalRef.current) {

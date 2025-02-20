@@ -171,7 +171,7 @@ const Navbar = () => {
                       "hover:bg-red-700 transition-colors"
                     )}
                   >
-                    Let&apos;s Collaborate
+                    Let&apos;s Cooperation
                   </motion.button>
                 </div>
               </SheetContent>

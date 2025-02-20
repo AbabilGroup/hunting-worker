@@ -1,5 +1,7 @@
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef, useState } from "react";
+import { ArrowRight } from "lucide-react";
 
 interface CommonBannerProps {
   title: string;
@@ -16,89 +18,102 @@ const CommonBanner = ({
   onButtonClick,
   className,
 }: CommonBannerProps) => {
-  return (
-    <div
-      className={cn(
-        "relative w-screen bg-primary overflow-hidden", // Changed w-full to w-screen
-        "py-8 sm:py-12 md:py-16 lg:py-20", // Fixed lg:py typo and added value
-        "-mx-[calc((100vw-100%)/2)]", // Compensate for any scrollbar width
-        className
-      )}
-    >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div
-          className={cn(
-            "mx-auto",
-            buttonText
-              ? "flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 lg:gap-8"
-              : "text-center max-w-[95%] sm:max-w-2xl lg:max-w-3xl"
-          )}
-        >
-          <div
-            className={cn(
-              "space-y-4 sm:space-y-6",
-              buttonText ? "flex-1 w-full sm:w-auto" : "mx-auto",
-              "text-center sm:text-left"
-            )}
-          >
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className={cn(
-                "font-bold text-white",
-                "text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl",
-                "leading-tight",
-                buttonText ? "mb-2 sm:mb-0" : ""
-              )}
-            >
-              {title}
-            </motion.h1>
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
 
-            {subtitle && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
+  const opacity = useTransform(scrollYProgress, [0, 0.4], [0, 1]);
+  const y = useTransform(scrollYProgress, [0, 0.5], [75, 0]);
+
+  return (
+    <div className="flex justify-center w-full py-12"> 
+      <div
+        ref={containerRef}
+        className={cn(
+          "relative w-[90%] bg-primary overflow-hidden", 
+          "rounded-xl",
+          "min-h-[25vh]", 
+          "flex items-center",
+          className
+        )}
+      >
+        <div className="w-full px-8 py-10 sm:px-10 sm:py-12"> 
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-8 sm:gap-10">
+            
+            <motion.div
+              style={{ opacity, y }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="w-full sm:w-2/3 space-y-3"
+            >
+              <motion.h1
                 className={cn(
-                  "text-white/90",
-                  "text-xs xs:text-sm sm:text-base md:text-lg",
-                  "leading-relaxed",
-                  "max-w-full sm:max-w-[90%]",
-                  "mt-6 sm:mt-8 md:mt-10" // Updated margin top values
+                  "font-bold text-white",
+                  "text-lg sm:text-2xl md:text-3xl lg:text-4xl",
+                  "leading-tight"
                 )}
               >
-                {subtitle}
+                {title}
+              </motion.h1>
+              {subtitle && (
+                <motion.div
+                  style={{ opacity, y }}
+                  transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
+                  className={cn(
+                    "text-white/90",
+                    "text-sm sm:text-base md:text-lg",
+                    "leading-relaxed"
+                  )}
+                >
+                  {subtitle}
+                </motion.div>
+              )}
+            </motion.div>
+
+            {/* Button Container  */}
+            {buttonText && (
+              <motion.div
+                style={{ opacity, y }}
+                transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
+                className="w-full sm:w-auto shrink-0"
+              >
+                <motion.button
+                  onClick={onButtonClick}
+                  onMouseEnter={() => setIsHovered(true)}
+                  onMouseLeave={() => setIsHovered(false)}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={cn(
+                    "w-full sm:w-auto",
+                    "px-6 sm:px-8",
+                    "py-3 sm:py-4",
+                    "rounded-lg",
+                    "bg-white text-primary font-medium",
+                    "transform transition-all duration-200",
+                    "hover:bg-white/90",
+                    "text-sm sm:text-base",
+                    "whitespace-nowrap",
+                    "shadow-sm hover:shadow-md",
+                    "flex items-center justify-center gap-2"
+                  )}
+                >
+                  <span>{buttonText}</span>
+                  <motion.div
+                    initial={{ width: 0, opacity: 0 }}
+                    animate={{
+                      width: isHovered ? "auto" : 0,
+                      opacity: isHovered ? 1 : 0,
+                    }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </motion.div>
+                </motion.button>
               </motion.div>
             )}
           </div>
-
-          {buttonText && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="shrink-0 w-full sm:w-auto mt-6 sm:mt-0"
-            >
-              <button
-                onClick={onButtonClick}
-                className={cn(
-                  "w-full sm:w-auto",
-                  "px-4 sm:px-6 lg:px-8",
-                  "py-2.5 sm:py-3 lg:py-4",
-                  "rounded-lg",
-                  "bg-white text-primary font-medium",
-                  "transform transition-all duration-200",
-                  "hover:bg-white/90 hover:scale-105",
-                  "text-sm sm:text-base",
-                  "whitespace-nowrap",
-                  "shadow-sm hover:shadow-md"
-                )}
-              >
-                {buttonText}
-              </button>
-            </motion.div>
-          )}
         </div>
       </div>
     </div>
