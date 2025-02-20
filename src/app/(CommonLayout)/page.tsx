@@ -15,7 +15,7 @@ export default function Home() {
       <Solution />
       <CommonBanner
         title="Our mission is to connect the right workers with the right employers."
-        buttonText="Let's Cooperation"
+        buttonText="Let`s Cooperation"
         onButtonClick={() => {}}
       />
     </main>
