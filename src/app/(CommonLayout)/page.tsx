@@ -10,14 +10,14 @@ export default function Home() {
   return (
     <main>
       <Hero />
+      <HomeEmploy />
+      <AgencySection />
+      <Solution />
       <CommonBanner
         title="Our mission is to connect the right workers with the right employers."
         buttonText="Let's Cooperation"
         onButtonClick={() => {}}
       />
-      <HomeEmploy />
-      <AgencySection />
-      <Solution />
     </main>
   );
 }
