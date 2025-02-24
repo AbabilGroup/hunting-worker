@@ -16,7 +16,7 @@ export default function Home() {
       <AgencySection />
       <Solution />
       <RecruitmentCenters />
-      {/* <Process /> */}
+      <Process />
       <CommonBanner
         title="Our mission is to connect the right workers with the right employers."
         buttonText="Let`s Cooperation"

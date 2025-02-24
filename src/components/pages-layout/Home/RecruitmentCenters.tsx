@@ -9,8 +9,8 @@ import { motion } from "framer-motion";
 import { useEffect, useState, useRef, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import NoSelector from "@/components/common/Noselector";
 
-// Move centers array outside component
 const centers = [
   {
     country: "India",
@@ -43,50 +43,50 @@ const RecruitmentCenters = () => {
   const [current, setCurrent] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Memoize the carousel items
   const carouselItems = useMemo(() => {
     return centers.map((center, index) => (
       <CarouselItem
         key={center.country}
         className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3"
       >
-        <Card className="border-none carousel-card group cursor-grab active:cursor-grabbing">
-          <CardContent className="p-6">
+        <Card className="border-none carousel-card group cursor-grab active:cursor-grabbing h-full">
+          <CardContent className="p-6 flex flex-col h-full">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="space-y-6"
+              className="space-y-6 flex flex-col h-full"
             >
-              {/* Image Container */}
-              <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
-                <Image
-                  src={center.image}
-                  alt={center.country}
-                  fill
-                  priority={index === 0} // Priority loading for first image
-                  loading={index === 0 ? "eager" : "lazy"} // Lazy load non-priority images
-                  className="object-cover filter grayscale hover:grayscale-0 transition-all duration-300 transform group-hover:scale-105"
-                />
-              </div>
+              <NoSelector>
+                {/* Image container */}
+                <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
+                  <Image
+                    src={center.image}
+                    alt={center.country}
+                    fill
+                    priority={index === 0}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    className="object-cover filter grayscale hover:grayscale-0 transition-all duration-300 transform group-hover:scale-105"
+                  />
+                </div>
 
-              {/* Content */}
-              <div className="space-y-4">
-                <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 group-hover:text-primary transition-colors duration-300">
-                  {center.country}
-                </h3>
-                <p className="text-gray-600 text-sm sm:text-base leading-relaxed group-hover:text-gray-700">
-                  {center.description}
-                </p>
-              </div>
+                {/* Content */}
+                <div className="space-y-3 mt-6">
+                  <h3 className="text-lg sm:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors duration-300 line-clamp-2">
+                    {center.country}
+                  </h3>
+                  <p className="text-gray-600 text-sm leading-relaxed group-hover:text-gray-700 line-clamp-4">
+                    {center.description}
+                  </p>
+                </div>
+              </NoSelector>
             </motion.div>
           </CardContent>
         </Card>
       </CarouselItem>
     ));
-  }, []); // Empty dependency array since centers is static
+  }, []);
 
-  // Memoize the navigation dots
   const navigationDots = useMemo(() => {
     return centers.map((_, index) => (
       <button
@@ -136,19 +136,19 @@ const RecruitmentCenters = () => {
   return (
     <section className="py-20 overflow-hidden">
       <div className="container mx-auto px-4">
-        
-          titleComponent={
-            <div className="text-center space-y-4 mb-12">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary">
-                Recruitment Centers
-              </h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
-                The choice of country depends on the required occupation of workers,
-                working conditions as well as employer preferences.
-              </p>
-            </div>
-          }
-          
+        {/* Title Section */}
+        <div className="text-center mb-12">
+          <div className="space-y-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary">
+              Recruitment Centers
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              The choice of country depends on the required occupation of workers,
+              working conditions as well as employer preferences.
+            </p>
+          </div>
+        </div>
+
         <div className="relative px-4">
           <Carousel
             opts={{
@@ -158,9 +158,7 @@ const RecruitmentCenters = () => {
             setApi={setApi}
             className="w-full"
           >
-            <CarouselContent>
-              {carouselItems}
-            </CarouselContent>
+            <CarouselContent>{carouselItems}</CarouselContent>
           </Carousel>
 
           {/* Dots Navigation */}

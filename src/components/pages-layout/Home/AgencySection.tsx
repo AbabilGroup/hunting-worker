@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ChevronDown, Building2, Users2, Filter } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import NoSelector from "@/components/common/Noselector";
 
 export default function AgencySection() {
   // Set first item open by default
@@ -26,7 +27,7 @@ export default function AgencySection() {
   ];
 
   return (
-    <section className="pt-10 ">
+    <section className="pt-10">
       <div className="container mx-auto px-4 py-8 sm:py-12 lg:py-20 max-w-7xl">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
           {/* Icons Section */}
@@ -42,10 +43,12 @@ export default function AgencySection() {
               }}
               className="aspect-square bg-primary flex items-center justify-center p-6 sm:p-8"
             >
-              <Building2
-                className="w-12 h-12 sm:w-16 sm:h-16 text-white"
-                strokeWidth={1.5}
-              />
+              <NoSelector>
+                <Building2
+                  className="w-12 h-12 sm:w-16 sm:h-16 text-white"
+                  strokeWidth={1.5}
+                />
+              </NoSelector>
             </motion.div>
 
             <motion.div
@@ -59,10 +62,12 @@ export default function AgencySection() {
               }}
               className="aspect-square bg-primary flex items-center justify-center p-6 sm:p-8 -mt-4 sm:-mt-8"
             >
-              <Users2
-                className="w-12 h-12 sm:w-16 sm:h-16 text-white"
-                strokeWidth={1.5}
-              />
+              <NoSelector>
+                <Users2
+                  className="w-12 h-12 sm:w-16 sm:h-16 text-white"
+                  strokeWidth={1.5}
+                />
+              </NoSelector>
             </motion.div>
 
             {/* Bottom row - Centered card */}
@@ -77,10 +82,12 @@ export default function AgencySection() {
               }}
               className="col-span-2 aspect-square bg-primary flex items-center justify-center p-6 sm:p-8 w-1/2 -mt-10 sm:-mt-14 ml-16 sm:ml-24"
             >
-              <Filter
-                className="w-12 h-12 sm:w-16 sm:h-16 text-white"
-                strokeWidth={1.5}
-              />
+              <NoSelector>
+                <Filter
+                  className="w-12 h-12 sm:w-16 sm:h-16 text-white"
+                  strokeWidth={1.5}
+                />
+              </NoSelector>
             </motion.div>
           </div>
 

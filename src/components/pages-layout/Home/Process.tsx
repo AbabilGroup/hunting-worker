@@ -1,6 +1,5 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { cn } from "@/lib/utils";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { Calendar, Users, FileCheck2, Plane } from "lucide-react";
 import { CardContainer, CardBody } from "@/components/ui/3d-card";
 
@@ -38,35 +37,40 @@ const Process = () => {
     offset: ["start start", "end start"],
   });
 
-  // Modified transform values for desired scroll behavior
-  const translateLeft = useTransform(scrollYProgress, [0, 1], [200, -150]);
-  const translateRight = useTransform(scrollYProgress, [0, 1], [200, -150]);
-  const translateMiddleTop = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  useEffect(() => {
+    return () => {
+      scrollYProgress.destroy();
+    };
+  }, [scrollYProgress]);
+
+  const translateLeft = useTransform(scrollYProgress, [0, 1], [100, -80]);
+  const translateRight = useTransform(scrollYProgress, [0, 1], [100, -80]);
+  const translateMiddleTop = useTransform(scrollYProgress, [0, 1], [0, 150]); 
+  const translateTitle = useTransform(scrollYProgress, [0, 1], [100, -30]);
 
   return (
-    <section className="py-12 md:py-20 overflow-hidden" ref={containerRef}> {/* Reduced padding for mobile */}
+    <section className="py-8 md:py-16 lg:py-20 overflow-hidden" ref={containerRef}>
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6  max-w-7xl mx-auto"> {/* Reduced gap for mobile */}
-          {/* Desktop Layout - First Card with Title */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 max-w-7xl mx-auto">
           <div className="relative hidden md:block">
-            {/* Title Section - Positioned above first card */}
             <motion.div 
-              className="absolute top-32 left-2 z-10 mb-4"
-              initial={{ opacity: 0, y: -20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              className="absolute top-14 left-2 z-10"
+              style={{ y: translateTitle }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <h2 className="text-2xl md:text-3xl font-bold text-primary mb-2">
+              <h2 className="text-xl lg:text-2xl xl:text-3xl font-bold text-primary mb-1">
                 The Process of Hiring Foreign Workers
               </h2>
-              <p className="text-sm md:text-base text-gray-600">
+              <p className="text-sm lg:text-base text-gray-600">
                 A comprehensive approach to international recruitment
               </p>
             </motion.div>
 
             <motion.div
               style={{ y: translateLeft }}
-              className="h-full lg:mt-18" 
+              className="h-full mt-32"
             >
               <CardContainer className="w-full">
                 <ProcessCard step={processSteps[0]} index={0} />
@@ -75,14 +79,18 @@ const Process = () => {
           </div>
 
           {/* Middle Column - Second and Third Cards */}
-          <div className="hidden md:flex flex-col -space-y-24 mt-20"> {/* Added mt-16 to move second card down */}
+          <div className="hidden md:flex flex-col -space-y-8 lg:-space-y-28 mt-16"> 
             {[1, 2].map((index) => (
               <motion.div
                 key={processSteps[index].title}
                 style={{ y: translateMiddleTop }}
-                initial={{ opacity: 0, y: 0 }}
+                initial={{ opacity: 0, y: 20 }} 
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ 
+                  duration: 0.5, 
+                  delay: index * 0.1,
+                  ease: "easeOut" 
+                }}
                 className="transform-gpu"
               >
                 <CardContainer className="w-full">
@@ -95,14 +103,14 @@ const Process = () => {
           {/* Right Column - Fourth Card */}
           <motion.div
             style={{ y: translateRight }}
-            className="hidden md:block h-full lg:mt-18" 
+            className="hidden md:block h-full mt-32"
           >
             <CardContainer className="w-full">
               <ProcessCard step={processSteps[3]} index={3} />
             </CardContainer>
           </motion.div>
 
-          {/* Mobile Layout - Title needs to be visible on mobile */}
+          {/* Mobile Layout */}
           <div className="md:hidden">
             {/* Mobile Title */}
             <motion.div 
@@ -111,41 +119,41 @@ const Process = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <h2 className="text-lg sm:text-xl font-bold text-primary mb-1"> {/* Adjusted text size */}
+              <h2 className="text-lg sm:text-xl font-bold text-primary mb-1"> 
                 The Process of Hiring Foreign Workers
               </h2>
-              <p className="text-xs sm:text-sm text-gray-600"> {/* Adjusted text size */}
+              <p className="text-xs sm:text-sm text-gray-600"> 
                 A comprehensive approach to international recruitment
               </p>
             </motion.div>
 
             {/* Mobile Cards */}
-            <div className="space-y-3"> {/* Reduced space between cards */}
+            <div className="space-y-6"> 
               {processSteps.map((step, index) => (
                 <motion.div
                   key={step.title}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
-                  className="bg-white rounded-lg p-3 shadow-md" // Reduced padding
+                  className="bg-white rounded-lg p-6 shadow-md"
                 >
-                  <div className="flex items-start gap-2 sm:gap-3"> {/* Reduced gap */}
-                    <div className="p-1.5 sm:p-2 bg-primary/10 rounded-lg shrink-0"> {/* Reduced padding */}
-                      <step.icon className="w-4 h-4 text-primary" /> {/* Fixed icon size */}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-1.5 gap-1"> {/* Reduced margin */}
-                        <h3 className="font-semibold text-sm text-gray-900 line-clamp-1">
-                          {step.title}
-                        </h3>
-                        <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full whitespace-nowrap self-start">
-                          {step.duration}
-                        </span>
+                  <div className="flex flex-col gap-4"> 
+                    <div className="flex items-center justify-between"> 
+                      <h3 className="font-semibold text-base text-gray-900"> 
+                        {step.title}
+                      </h3>
+                      <div className="p-3 bg-primary/10 rounded-lg shrink-0"> 
+                        <step.icon className="w-6 h-6 text-primary" /> 
                       </div>
-                      <p className="text-xs text-gray-600 leading-relaxed">
-                        {step.description}
-                      </p>
                     </div>
+                    
+                    <span className="text-sm bg-primary/10 text-primary px-3 py-1 rounded-full w-fit"> 
+                      {step.duration}
+                    </span>
+                    
+                    <p className="text-sm text-gray-600 leading-relaxed mt-2"> 
+                      {step.description}
+                    </p>
                   </div>
                 </motion.div>
               ))}
@@ -157,31 +165,35 @@ const Process = () => {
   );
 };
 
-// Separate ProcessCard component for better organization
-const ProcessCard = ({ step, index }: { step: typeof processSteps[0]; index: number }) => {
+const ProcessCard = ({ step }: { step: typeof processSteps[0]; index: number }) => {
   const Icon = step.icon;
   
   return (
-    <CardBody className="bg-white rounded-xl p-8 shadow-lg flex flex-col h-full min-h-[450px]">
-      {/* Duration Badge */}
-      <div className="absolute top-4 right-4">
-        <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
+    <CardBody className="bg-white rounded-xl p-4 sm:p-5 lg:p-6 shadow-lg flex flex-col h-full 
+      min-h-[300px] lg:min-h-[320px] relative transition-all duration-300 hover:bg-primary/5 group">
+      {/* Duration badge */}
+      <div className="absolute top-3 right-3">
+        <span className="px-2 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium
+          group-hover:bg-primary/20">
           {step.duration}
         </span>
       </div>
 
-      {/* Icon and Title */}
-      <div className="flex flex-col items-center text-center mb-6">
-        <div className="p-4 bg-primary/10 rounded-xl mb-4 transform transition-transform duration-300 hover:scale-110">
-          <Icon className="w-8 h-8 text-primary" />
+      {/* Icon and Title Container */}
+      <div className="flex flex-col items-start text-left space-y-3">
+        <div className="p-3 bg-primary/10 rounded-xl transform transition-all duration-300 
+          hover:scale-110 group-hover:bg-primary/20">
+          <Icon className="w-6 h-6 text-primary" />
         </div>
-        <h3 className="font-bold text-xl md:text-2xl text-gray-900 mb-2">
+        <h3 className="font-bold text-lg lg:text-xl text-gray-900
+          group-hover:text-primary transition-colors duration-300">
           {step.title}
         </h3>
       </div>
 
       {/* Description */}
-      <p className="text-gray-600 text-base leading-relaxed flex-grow">
+      <p className="text-gray-600 text-sm leading-relaxed mt-3
+        group-hover:text-gray-700 transition-colors duration-300">
         {step.description}
       </p>
     </CardBody>
