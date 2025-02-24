@@ -60,7 +60,6 @@ const CarouselSlide = memo(({ center, index }: {
                 alt={center.country}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                placeholder="blur"
                 className="object-cover filter grayscale hover:grayscale-0 transition-all duration-300 transform group-hover:scale-105"
               />
             </div>
