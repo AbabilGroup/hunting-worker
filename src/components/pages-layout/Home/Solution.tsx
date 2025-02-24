@@ -1,24 +1,27 @@
-import { Card, CardContent } from "@/components/ui/card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-  type CarouselApi,
-} from "@/components/ui/carousel";
+import dynamic from 'next/dynamic';
+import { useState, useRef, useCallback, useEffect, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState, useRef } from "react";
+import { CarouselApi } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
-import AnimatedSvgIcon from "@/components/common/AnimatedSvgIcon";
-import NoSelector from "@/components/common/Noselector";
+const Card = dynamic(() => import("@/components/ui/card").then(mod => mod.Card));
+const CardContent = dynamic(() => import("@/components/ui/card").then(mod => mod.CardContent));
+const Carousel = dynamic(() => import("@/components/ui/carousel").then(mod => mod.Carousel));
+const CarouselContent = dynamic(() => import("@/components/ui/carousel").then(mod => mod.CarouselContent));
+const CarouselItem = dynamic(() => import("@/components/ui/carousel").then(mod => mod.CarouselItem));
+const CarouselNext = dynamic(() => import("@/components/ui/carousel").then(mod => mod.CarouselNext));
+const CarouselPrevious = dynamic(() => import("@/components/ui/carousel").then(mod => mod.CarouselPrevious));
+const AnimatedSvgIcon = dynamic(() => import("@/components/common/AnimatedSvgIcon"));
+const NoSelector = dynamic(() => import("@/components/common/Noselector"));
+
+
+// Preload images
 const iconPaths = {
   users: "/icons/UserSpeakIcon.svg",
   tools: "/icons/MaintenanceIcon.svg",
   pending: "/icons/PendingUser.svg",
   clock: "/icons/TimeTracking.svg",
   task: "/icons/TaskClock.svg",
-};
+} as const;
 
 const solutions = [
   {
@@ -53,11 +56,83 @@ const solutions = [
   },
 ];
 
+const CarouselSlide = memo(({ solution, index }: { solution: typeof solutions[0], index: number }) => (
+  <CarouselItem className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+    <Card className={cn(
+      "border-none h-full carousel-card group",
+      "transition-all duration-300",
+      "hover:bg-primary/20",
+      "cursor-grab active:cursor-grabbing"
+    )}>
+      <CardContent
+        className={cn(
+          "p-6 flex flex-col h-full",
+          "group-hover:scale-[0.98]",
+          "transition-all duration-300",
+          "group-hover:bg-primary/15"
+        )}
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: index * 0.1 }}
+          className="space-y-6 flex-1 flex flex-col"
+        >
+          {/* Icon Container */}
+          <NoSelector>
+            <div className="p-4 rounded-lg bg-primary/10 w-fit group-hover:bg-primary/20 transition-colors duration-300">
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <AnimatedSvgIcon
+                  iconSrc={solution.icon}
+                  className="w-10 h-10 sm:w-12 sm:h-12 relative"
+                />
+              </motion.div>
+            </div>
+          </NoSelector>
+
+          {/* Content */}
+          <div className="flex-1 flex flex-col justify-between space-y-4">
+            <NoSelector>
+              <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 line-clamp-2 group-hover:text-primary transition-colors duration-300">
+                {solution.title}
+              </h3>
+              <p className="text-gray-600 leading-relaxed text-sm sm:text-base group-hover:text-gray-700 transition-colors duration-300">
+                {solution.description}
+              </p>
+            </NoSelector>
+          </div>
+        </motion.div>
+      </CardContent>
+    </Card>
+  </CarouselItem>
+));
+
+CarouselSlide.displayName = 'CarouselSlide';
+
 const Solution = () => {
   const [titleIndex, setTitleIndex] = useState<number>(0);
   const titles: string[] = ["Solution", "Support"];
   const [api, setApi] = useState<CarouselApi>();
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Memoize event handlers
+  const handleAutoplay = useCallback(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+    intervalRef.current = setInterval(() => {
+      api?.scrollNext();
+    }, 4000);
+  }, [api]);
+
+  const handlePointerDown = useCallback(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -70,33 +145,18 @@ const Solution = () => {
   useEffect(() => {
     if (!api) return;
 
-    const autoplay = () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
+    handleAutoplay();
+    api.on("select", handleAutoplay);
+    api.on("pointerDown", handlePointerDown);
 
-      intervalRef.current = setInterval(() => {
-        api.scrollNext();
-      }, 4000);
-    };
-
-    autoplay();
-
-    api.on("select", autoplay);
-    api.on("pointerDown", () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    });
-
-   
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
-      api.off("select", autoplay);
+      api.off("select", handleAutoplay);
+      api.off("pointerDown", handlePointerDown);
     };
-  }, [api]);
+  }, [api, handleAutoplay, handlePointerDown]);
 
   return (
     <section className="py-20">
@@ -142,62 +202,11 @@ const Solution = () => {
             >
               <CarouselContent className="-ml-2 md:-ml-4">
                 {solutions.map((solution, index) => (
-                  <CarouselItem
-                    key={index}
-                    className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3"
-                  >
-                    <Card
-                      className={cn(
-                        "border-none h-full carousel-card group",
-                        "transition-all duration-300",
-                        "hover:bg-primary/20", 
-                        "cursor-grab active:cursor-grabbing"
-                      )}
-                    >
-                      <CardContent
-                        className={cn(
-                          "p-6 flex flex-col h-full",
-                          "group-hover:scale-[0.98]",
-                          "transition-all duration-300",
-                          "group-hover:bg-primary/15"
-                        )}
-                      >
-                        <motion.div
-                          initial={{ opacity: 0, y: 20 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.5, delay: index * 0.1 }}
-                          className="space-y-6 flex-1 flex flex-col"
-                        >
-                          {/* Icon Container */}
-                          <NoSelector>
-                            <div className="p-4 rounded-lg bg-primary/10 w-fit group-hover:bg-primary/20 transition-colors duration-300">
-                              <motion.div
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.95 }}
-                              >
-                                <AnimatedSvgIcon
-                                  iconSrc={solution.icon}
-                                  className="w-10 h-10 sm:w-12 sm:h-12 relative"
-                                />
-                              </motion.div>
-                            </div>
-                          </NoSelector>
-
-                          {/* Content */}
-                          <div className="flex-1 flex flex-col justify-between space-y-4">
-                            <NoSelector>
-                              <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 line-clamp-2 group-hover:text-primary transition-colors duration-300">
-                                {solution.title}
-                              </h3>
-                              <p className="text-gray-600 leading-relaxed text-sm sm:text-base group-hover:text-gray-700 transition-colors duration-300">
-                                {solution.description}
-                              </p>
-                            </NoSelector>
-                          </div>
-                        </motion.div>
-                      </CardContent>
-                    </Card>
-                  </CarouselItem>
+                  <CarouselSlide 
+                    key={solution.title} 
+                    solution={solution} 
+                    index={index} 
+                  />
                 ))}
               </CarouselContent>
 
