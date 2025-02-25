@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import NoSelector from "@/components/common/Noselector";
 
 export default function AgencySection() {
-  // Set first item open by default
   const [openItem, setOpenItem] = useState<number>(0);
 
   const accordionItems = [
@@ -34,13 +33,9 @@ export default function AgencySection() {
           <div className="relative order-1 lg:order-1 grid grid-cols-2 gap-4 w-full max-w-md mx-auto">
             {/* Top row - Two cards side by side */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.5,
-                ease: [0.4, 0, 0.2, 1],
-              }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
               className="aspect-square bg-primary flex items-center justify-center p-6 sm:p-8"
             >
               <NoSelector>
@@ -52,14 +47,9 @@ export default function AgencySection() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.5,
-                delay: 0.15,
-                ease: [0.4, 0, 0.2, 1],
-              }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.15 }}
               className="aspect-square bg-primary flex items-center justify-center p-6 sm:p-8 -mt-4 sm:-mt-8"
             >
               <NoSelector>
@@ -72,14 +62,9 @@ export default function AgencySection() {
 
             {/* Bottom row - Centered card */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.5,
-                delay: 0.3,
-                ease: [0.4, 0, 0.2, 1],
-              }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
               className="col-span-2 aspect-square bg-primary flex items-center justify-center p-6 sm:p-8 w-1/2 -mt-10 sm:-mt-14 ml-16 sm:ml-24"
             >
               <NoSelector>
@@ -93,9 +78,8 @@ export default function AgencySection() {
 
           {/* Content Section */}
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
             className="space-y-6 sm:space-y-8 order-2 lg:order-2 mt-8 lg:mt-0"
           >
@@ -107,11 +91,10 @@ export default function AgencySection() {
               {accordionItems.map((item, index) => (
                 <motion.div
                   key={index}
-                  className="border-b border-gray-200"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
+                  className="border-b border-gray-200"
                 >
                   <button
                     onClick={() => setOpenItem(openItem === index ? -1 : index)}
@@ -130,13 +113,10 @@ export default function AgencySection() {
                   <AnimatePresence initial={false}>
                     {openItem === index && (
                       <motion.div
-                        initial={{ opacity: 0, height: 0, y: -20 }}
-                        animate={{ opacity: 1, height: "auto", y: 0 }}
-                        exit={{ opacity: 0, height: 0, y: -20 }}
-                        transition={{
-                          duration: 0.3,
-                          ease: "easeInOut",
-                        }}
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
                         className="overflow-hidden"
                       >
                         <div className="pb-2 sm:pb-3 lg:pb-4 text-xs sm:text-sm lg:text-base text-gray-500">
