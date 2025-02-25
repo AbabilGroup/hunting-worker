@@ -1,15 +1,18 @@
-import dynamic from 'next/dynamic';
-import { useEffect, useState, useRef, useMemo, memo, useCallback } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-const Card = dynamic(() => import("@/components/ui/card").then(mod => mod.Card));
-const CardContent = dynamic(() => import("@/components/ui/card").then(mod => mod.CardContent));
-const Carousel = dynamic(() => import("@/components/ui/carousel").then(mod => mod.Carousel));
-const CarouselContent = dynamic(() => import("@/components/ui/carousel").then(mod => mod.CarouselContent));
-const CarouselItem = dynamic(() => import("@/components/ui/carousel").then(mod => mod.CarouselItem));
+import { Card } from "@/components/ui/card";
+import { CardContent } from "@/components/ui/card";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { CarouselApi } from "@/components/ui/carousel";
-const NoSelector = dynamic(() => import("@/components/common/Noselector"));
+import NoSelector from "@/components/common/Noselector"; 
+import dynamic from 'next/dynamic';
+import { memo } from 'react';
+
+// Lazy load motion components
+const MotionDiv = dynamic(() => import('framer-motion').then(mod => mod.motion.div), {
+  ssr: false
+});
 
 const centers = [
   {
@@ -38,42 +41,30 @@ const centers = [
   },
 ];
 
-const CarouselSlide = memo(({ center, index }: { 
-  center: typeof centers[0], 
-  index: number 
-}) => (
-  <CarouselItem
-    className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3"
-  >
-    <Card className="border-none carousel-card group cursor-grab active:cursor-grabbing h-full">
-      <CardContent className="p-6 flex flex-col h-full">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: index * 0.1 }}
-          className="space-y-6 flex flex-col h-full"
-        >
-          <NoSelector>
-            <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
-              <Image
-                src={center.image}
-                alt={center.country}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-cover filter grayscale hover:grayscale-0 transition-all duration-300 transform group-hover:scale-105"
-              />
-            </div>
-            {/* Content */}
-            <div className="space-y-3 mt-6">
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors duration-300 line-clamp-2">
-                {center.country}
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed group-hover:text-gray-700 line-clamp-4">
-                {center.description}
-              </p>
-            </div>
-          </NoSelector>
-        </motion.div>
+// Memoize CarouselSlide component
+const CarouselSlide = memo(({ center }: { center: typeof centers[0] }) => (
+  <CarouselItem className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3 cursor-grab active:cursor-grabbing">
+    <Card className="border-none h-full transition-all duration-300 hover:bg-primary/5 group">
+      <CardContent className="p-6">
+        <NoSelector>
+          <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
+            <Image
+              src={center.image}
+              alt={center.country}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover transition-all duration-300 grayscale group-hover:grayscale-0 group-hover:scale-110 pointer-events-none"
+            />
+          </div>
+        </NoSelector>
+        <NoSelector className="mt-6 space-y-3">
+          <h3 className="text-lg sm:text-xl font-semibold text-gray-900 transition-colors duration-300 group-hover:text-primary">
+            {center.country}
+          </h3>
+          <p className="text-gray-600 text-sm leading-relaxed line-clamp-4 transition-colors duration-300 group-hover:text-primary/80">
+            {center.description}
+          </p>
+        </NoSelector>
       </CardContent>
     </Card>
   </CarouselItem>
@@ -81,108 +72,120 @@ const CarouselSlide = memo(({ center, index }: {
 
 CarouselSlide.displayName = 'CarouselSlide';
 
+const AUTO_PLAY_INTERVAL = 5000;
+
+// Use in both components
+const pageVariants = {
+  initial: { opacity: 0 },
+  animate: { 
+    opacity: 1,
+    transition: { 
+      duration: 0.3,
+      staggerChildren: 0.1 
+    }
+  }
+};
+
+const itemVariants = {
+  initial: { opacity: 0, y: 20 },
+  animate: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.3 }
+  }
+};
+
 const RecruitmentCenters = () => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  useEffect(() => {
+    setIsLoading(false);
+  }, []);
+  
+  useEffect(() => {
+    if (!api) return;
 
-  // Memoize carousel items
+    const handleSelect = () => setCurrent(api.selectedScrollSnap());
+    api.on("select", handleSelect);
+
+    const timer = setInterval(() => api.scrollNext(), AUTO_PLAY_INTERVAL);
+
+    return () => {
+      api.off("select", handleSelect);
+      clearInterval(timer);
+    };
+  }, [api]);
+
   const carouselItems = useMemo(() => (
-    centers.map((center, index) => (
+    centers.map((center) => (
       <CarouselSlide
         key={center.country}
         center={center}
-        index={index}
       />
     ))
   ), []);
 
-  // Memoize navigation dots
-  const navigationDots = useMemo(() => (
-    centers.map((_, index) => (
-      <button
-        key={index}
-        className={cn(
-          "w-2.5 h-2.5 rounded-full transition-all duration-300",
-          current === index
-            ? "bg-primary scale-125"
-            : "bg-gray-300 hover:bg-primary/50"
-        )}
-        onClick={() => api?.scrollTo(index)}
-        aria-label={`Go to slide ${index + 1}`}
-      />
-    ))
-  ), [current, api]);
-
-  // Optimize autoplay with useCallback
-  const handleAutoplay = useCallback(() => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-    }
-    intervalRef.current = setInterval(() => {
-      api?.scrollNext();
-    }, 5000);
-  }, [api]);
-
-  // Cleanup and event handlers
-  useEffect(() => {
-    if (!api) return;
-
-    handleAutoplay();
-
-    const handleSelect = () => {
-      setCurrent(api.selectedScrollSnap());
-      handleAutoplay();
-    };
-
-    const handlePointerDown = () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-
-    api.on("select", handleSelect);
-    api.on("pointerDown", handlePointerDown);
-
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-      api.off("select", handleSelect);
-      api.off("pointerDown", handlePointerDown);
-    };
-  }, [api, handleAutoplay]);
-
   return (
     <section className="py-20 overflow-hidden">
-      <div className="container mx-auto px-4">
-        {/* Title Section */}
-        <div className="text-center mb-12">
-          <div className="space-y-4">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary">
+      {!isLoading && (
+        <div className="container mx-auto px-4">
+          <MotionDiv 
+            className="text-center mb-12"
+            initial="initial"
+            animate="animate"
+            variants={pageVariants}
+          >
+            <MotionDiv 
+              className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary"
+              initial="initial"
+              animate="animate"
+              variants={itemVariants}
+            >
               Recruitment Centers
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+            </MotionDiv>
+            <MotionDiv 
+              className="text-gray-600 max-w-2xl mx-auto mt-4"
+              initial="initial"
+              animate="animate"
+              variants={itemVariants}
+            >
               The choice of country depends on the required occupation of workers,
               working conditions as well as employer preferences.
-            </p>
+            </MotionDiv>
+          </MotionDiv>
+
+          <div className="relative px-4">
+            <Carousel
+              opts={{
+                align: "start",
+                loop: true,
+              }}
+              setApi={setApi}
+              className="w-full"
+            >
+              <CarouselContent>{carouselItems}</CarouselContent>
+            </Carousel>
+
+            <div className="flex justify-center gap-2 mt-8">
+              {centers.map((_, index) => (
+                <button
+                  key={index}
+                  className={cn(
+                    "w-2.5 h-2.5 rounded-full transition-all",
+                    current === index
+                      ? "bg-primary scale-125"
+                      : "bg-gray-300 hover:bg-primary/50"
+                  )}
+                  onClick={() => api?.scrollTo(index)}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
+            </div>
           </div>
         </div>
-
-        <div className="relative px-4">
-          <Carousel
-            opts={{
-              align: "start",
-              loop: true,
-            }}
-            setApi={setApi}
-            className="w-full"
-          >
-            <CarouselContent>{carouselItems}</CarouselContent>
-          </Carousel>
-
-          {/* Dots Navigation */}
-          <div className="flex justify-center gap-2 mt-8">
-            {navigationDots}
-          </div>
-        </div>
-      </div>
+      )}
     </section>
   );
 };

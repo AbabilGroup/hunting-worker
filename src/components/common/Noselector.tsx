@@ -10,10 +10,7 @@ const NoSelector = ({ children, className }: NoSelectorProps) => {
   return (
     <div
       className={cn(
-        "select-none pointer-events-auto",
-        "-webkit-user-select: none",
-        "-moz-user-select: none",
-        "-ms-user-select: none",
+        "select-none",
         className
       )}
     >
