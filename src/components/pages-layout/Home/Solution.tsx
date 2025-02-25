@@ -8,7 +8,7 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import AnimatedSvgIcon from "@/components/common/AnimatedSvgIcon";
 const iconPaths = {
@@ -18,8 +18,15 @@ const iconPaths = {
   clock: "/icons/TimeTracking.svg",
   task: "/icons/TaskClock.svg",
 };
+import NoSelector from "@/components/common/Noselector";
 
-const solutions = [
+interface Solution {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+const solutions: Solution[] = [
   {
     icon: iconPaths.users,
     title: "Leasing of Employees",
@@ -56,10 +63,9 @@ const Solution = () => {
   const [titleIndex, setTitleIndex] = useState<number>(0);
   const titles: string[] = ["Solution", "Support"];
   const [api, setApi] = useState<CarouselApi>();
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const isScrolling = useRef(false);
-  const lastScrollY = useRef(0);
+  const autoplayTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const isScrollingRef = useRef(false);
+  const scrollDebounceRef = useRef<NodeJS.Timeout | null>(null);
 
   // Title animation interval
   useEffect(() => {
@@ -70,72 +76,113 @@ const Solution = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Carousel autoplay with scroll handling
+  // Optimized carousel autoplay
   useEffect(() => {
     if (!api) return;
 
+    let isMouseOver = false;
+
     const startAutoplay = () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
+      if (autoplayTimeoutRef.current) {
+        clearTimeout(autoplayTimeoutRef.current);
       }
-      if (!isScrolling.current) {
-        intervalRef.current = setInterval(() => {
+      
+      if (!isMouseOver && !isScrollingRef.current) {
+        autoplayTimeoutRef.current = setTimeout(() => {
           api.scrollNext();
         }, 4000);
       }
     };
 
+    // Debounced scroll handler
     const handleScroll = () => {
-      // Get current scroll position
-      const currentScrollY = window.scrollY;
-      
-      // Only process if scroll direction changed significantly
-      if (Math.abs(currentScrollY - lastScrollY.current) > 50) {
-        lastScrollY.current = currentScrollY;
-        
-        // Clear existing timers
-        if (intervalRef.current) {
-          clearInterval(intervalRef.current);
-        }
-        if (timeoutRef.current) {
-          clearTimeout(timeoutRef.current);
-        }
+      if (scrollDebounceRef.current) {
+        clearTimeout(scrollDebounceRef.current);
+      }
 
-        isScrolling.current = true;
+      isScrollingRef.current = true;
+      if (autoplayTimeoutRef.current) {
+        clearTimeout(autoplayTimeoutRef.current);
+      }
 
-        // Debounced scroll end detection
-        timeoutRef.current = setTimeout(() => {
-          isScrolling.current = false;
-          startAutoplay();
-        }, 150);
+      scrollDebounceRef.current = setTimeout(() => {
+        isScrollingRef.current = false;
+        startAutoplay();
+      }, 150); // Reduced debounce time
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    const container = api.rootNode();
+    
+    const handleMouseEnter = () => {
+      isMouseOver = true;
+      if (autoplayTimeoutRef.current) {
+        clearTimeout(autoplayTimeoutRef.current);
       }
     };
 
-    // Initial autoplay start
+    const handleMouseLeave = () => {
+      isMouseOver = false;
+      startAutoplay();
+    };
+
+    container?.addEventListener('mouseenter', handleMouseEnter);
+    container?.addEventListener('mouseleave', handleMouseLeave);
+
     startAutoplay();
 
-    // Event listeners with passive flag for better performance 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    
-    api.on("select", startAutoplay);
-    api.on("pointerDown", () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    });
-
-    // Cleanup all timeouts and event listeners
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
+      container?.removeEventListener('mouseenter', handleMouseEnter);
+      container?.removeEventListener('mouseleave', handleMouseLeave);
+      if (autoplayTimeoutRef.current) {
+        clearTimeout(autoplayTimeoutRef.current);
       }
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
+      if (scrollDebounceRef.current) {
+        clearTimeout(scrollDebounceRef.current);
       }
-      api.off("select", startAutoplay);
     };
-  }, [api]); // Only depends on api changes
+  }, [api]);
+
+  // Memoize card rendering
+  const renderCard = useCallback((solution: Solution, index: number) => (
+    <CarouselItem
+      key={index}
+      className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3"
+    >
+      <Card
+        className={cn(
+          "border-none h-full carousel-card",
+          "hover:bg-primary/20",
+          "cursor-grab active:cursor-grabbing",
+          "transform-gpu" // Hardware acceleration
+        )}
+      >
+        <CardContent className="p-6 flex flex-col h-full">
+          <div className="space-y-6 flex-1 flex flex-col">
+            <div className="p-4 rounded-lg bg-primary/10 w-fit group-hover:bg-primary/20">
+              <AnimatedSvgIcon
+                iconSrc={solution.icon}
+                className="w-10 h-10 sm:w-12 sm:h-12 relative"
+              />
+            </div>
+
+            <div className="flex-1 flex flex-col justify-between space-y-4">
+              <NoSelector>
+                <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 line-clamp-2">
+                  {solution.title}
+                </h3>
+                <p className="text-gray-600 leading-relaxed text-sm sm:text-base">
+                  {solution.description}
+                </p>
+              </NoSelector>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </CarouselItem>
+  ), []);
 
   return (
     <section className="py-20">
@@ -163,72 +210,20 @@ const Solution = () => {
           </p>
         </div>
 
-        {/* Solutions Carousel */}
+        {/* Optimized Solutions Carousel */}
         <div className="relative px-4 sm:px-12">
-          {" "}
           <Carousel
             opts={{
               align: "start",
               loop: true,
+              skipSnaps: true, // Smoother scrolling
+              dragFree: true  // More responsive dragging
             }}
             setApi={setApi}
             className="w-full"
           >
             <CarouselContent className="-ml-2 md:-ml-4">
-              {solutions.map((solution, index) => (
-                <CarouselItem
-                  key={index}
-                  className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3"
-                >
-                  <Card
-                    className={cn(
-                      "border-none h-full carousel-card group",
-                      "transition-all duration-300",
-                      "hover:bg-primary/20", // Increased opacity for hover
-                      "cursor-grab active:cursor-grabbing"
-                    )}
-                  >
-                    <CardContent
-                      className={cn(
-                        "p-6 flex flex-col h-full",
-                        "group-hover:scale-[0.98]",
-                        "transition-all duration-300",
-                        "group-hover:bg-primary/15"
-                      )}
-                    >
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5, delay: index * 0.1 }}
-                        className="space-y-6 flex-1 flex flex-col"
-                      >
-                        {/* Icon Container */}
-                        <div className="p-4 rounded-lg bg-primary/10 w-fit group-hover:bg-primary/20 transition-colors duration-300">
-                          <motion.div
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.95 }}
-                          >
-                            <AnimatedSvgIcon
-                              iconSrc={solution.icon}
-                              className="w-10 h-10 sm:w-12 sm:h-12 relative"
-                            />
-                          </motion.div>
-                        </div>
-
-                        {/* Content */}
-                        <div className="flex-1 flex flex-col justify-between space-y-4">
-                          <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 line-clamp-2 group-hover:text-primary transition-colors duration-300">
-                            {solution.title}
-                          </h3>
-                          <p className="text-gray-600 leading-relaxed text-sm sm:text-base group-hover:text-gray-700 transition-colors duration-300">
-                            {solution.description}
-                          </p>
-                        </div>
-                      </motion.div>
-                    </CardContent>
-                  </Card>
-                </CarouselItem>
-              ))}
+              {solutions.map(renderCard)}
             </CarouselContent>
 
             {/* Updated Navigation Arrows */}
