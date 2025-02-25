@@ -74,7 +74,6 @@ body {
   }
 }
 
-
 @layer utilities {
   .mix-blend-difference {
     mix-blend-mode: difference;
@@ -105,6 +104,31 @@ body {
     to {
       stroke-dashoffset: 0;
     }
+  }
+
+  .carousel-container {
+    will-change: transform;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+  }
+
+  .carousel-item {
+    contain: content;
+    will-change: transform;
+  }
+
+  .full-bleed {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+  }
+
+  /* Ensure proper perspective rendering */
+  .perspective-1000 {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    transform: translateZ(0);
   }
 }
 

@@ -29,7 +29,7 @@ export default function CompanyForm() {
 
   return (
     <>
-      <div className="w-full min-w-full bg-primary py-8 sm:py-10 lg:py-12 -mt-16 overflow-hidden">
+      <div className="w-full min-w-full bg-primary py-8 sm:py-10 lg:py-12 -mt-24 overflow-hidden">
         <motion.div 
           className="container max-w-full px-4 sm:px-6 pb-8 sm:pb-10 lg:pb-12"
           initial={{ opacity: 0, y: 20 }}

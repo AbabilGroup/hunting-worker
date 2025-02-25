@@ -15,8 +15,8 @@ const MouseEnterContext = createContext<
 
 export const CardContainer = ({
   children,
-  className,
   containerClassName,
+  ...props
 }: {
   children?: React.ReactNode;
   className?: string;
@@ -48,24 +48,27 @@ export const CardContainer = ({
     <MouseEnterContext.Provider value={[isMouseEntered, setIsMouseEntered]}>
       <div
         className={cn(
-          "py-20 flex items-center justify-center",
+          "py-3 sm:py-4 flex items-center justify-center", // Reduced padding for mobile
           containerClassName
         )}
         style={{
-          perspective: "1000px",
+          perspective: window?.innerWidth > 768 ? "1000px" : "none",
         }}
+        {...props}
       >
         <div
           ref={containerRef}
           onMouseEnter={handleMouseEnter}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          className={cn(
-            "flex items-center justify-center relative transition-all duration-200 ease-linear",
-            className
-          )}
+          className="flex items-center justify-center relative transition-all 
+          duration-200 ease-linear w-full"
           style={{
-            transformStyle: "preserve-3d",
+            transformStyle: window?.innerWidth > 768 ? "preserve-3d" : "flat",
+            transform:
+              window?.innerWidth > 768
+                ? `rotateY(0deg) rotateX(0deg)`
+                : "none",
           }}
         >
           {children}
