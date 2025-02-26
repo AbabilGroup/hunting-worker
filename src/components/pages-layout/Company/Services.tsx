@@ -50,20 +50,27 @@ interface Service {
   icon: React.ComponentType<{ className?: string }>;
 }
 
+// Update ServiceCard component to have less height
 const ServiceCard = ({ service }: { service: Service }) => (
   <CardBody className="bg-white rounded-xl p-4 md:p-5 shadow-lg group hover:shadow-xl transition-all duration-300 
-    min-h-[220px] flex flex-col">
-    <div className="flex items-start space-x-3 mb-3">
-      <div className="p-3 bg-primary/10 rounded-lg shrink-0 
+    min-h-[180px] flex flex-col justify-start items-center text-center">
+    {/* Icon Container */}
+    <div className="mb-3">
+      <div className="p-3 bg-primary/10 rounded-lg inline-block
         group-hover:bg-primary transform transition-all duration-300">
         <service.icon className="w-5 h-5 text-primary group-hover:text-white transition-colors duration-300" />
       </div>
-      <h3 className="text-lg font-semibold text-gray-800 group-hover:text-primary 
-        transition-colors duration-300 line-clamp-2">
-        {service.title}
-      </h3>
     </div>
-    <p className="text-sm text-gray-600 leading-relaxed group-hover:text-gray-700 flex-grow">
+    
+    {/* Title */}
+    <h3 className="text-base md:text-lg font-semibold text-gray-800 group-hover:text-primary 
+      transition-colors duration-300 mb-2 px-4">
+      {service.title}
+    </h3>
+    
+    {/* Description */}
+    <p className="text-xs md:text-sm text-gray-600 leading-relaxed group-hover:text-gray-700
+      max-w-[280px] mx-auto">
       {service.description}
     </p>
   </CardBody>
@@ -88,8 +95,12 @@ const Services = () => {
     services.slice(4)
   ];
 
+  // Add margin to bottom of the section
   return (
-    <section className="py-8 md:py-16 lg:py-20 overflow-hidden" ref={containerRef}>
+    <section 
+      className="py-8 md:py-16 lg:py-20 pb-32 md:pb-40 lg:pb-48 overflow-hidden" 
+      ref={containerRef}
+    >
       <div className="container mx-auto px-4">
         {/* Hero Section */}
         <motion.div 

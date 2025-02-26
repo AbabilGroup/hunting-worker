@@ -45,8 +45,8 @@ const Process = () => {
 
   const translateLeft = useTransform(scrollYProgress, [0, 1], [100, -80]);
   const translateRight = useTransform(scrollYProgress, [0, 1], [100, -80]);
-  const translateMiddleTop = useTransform(scrollYProgress, [0, 1], [0, 150]); 
-  const translateTitle = useTransform(scrollYProgress, [0, 1], [100, -30]);
+  const translateMiddleTop = useTransform(scrollYProgress, [0, 1], [0, 80]); 
+  const translateTitle = useTransform(scrollYProgress, [0, 1], [100, -80]);
 
   return (
     <section className="py-8 md:py-16 lg:py-20 overflow-hidden" ref={containerRef}>
@@ -54,13 +54,13 @@ const Process = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 max-w-7xl mx-auto">
           <div className="relative hidden md:block">
             <motion.div 
-              className="absolute top-14 left-2 z-10"
+              className="absolute top-16 left-2 z-10" 
               style={{ y: translateTitle }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <h2 className="text-xl lg:text-2xl xl:text-3xl font-bold text-primary mb-1">
+              <h2 className="text-xl lg:text-2xl xl:text-3xl font-bold text-primary mb-4">
                 The Process of Hiring Foreign Workers
               </h2>
               <p className="text-sm lg:text-base text-gray-600">
@@ -70,7 +70,7 @@ const Process = () => {
 
             <motion.div
               style={{ y: translateLeft }}
-              className="h-full mt-32"
+              className="h-full mt-52" 
             >
               <CardContainer className="w-full">
                 <ProcessCard step={processSteps[0]} index={0} />
@@ -79,7 +79,7 @@ const Process = () => {
           </div>
 
           {/* Middle Column - Second and Third Cards */}
-          <div className="hidden md:flex flex-col -space-y-8 lg:-space-y-28 mt-16"> 
+          <div className="hidden md:flex flex-col space-y-8 lg:space-y-12 mt-32"> 
             {[1, 2].map((index) => (
               <motion.div
                 key={processSteps[index].title}
@@ -103,7 +103,7 @@ const Process = () => {
           {/* Right Column - Fourth Card */}
           <motion.div
             style={{ y: translateRight }}
-            className="hidden md:block h-full mt-32"
+            className="hidden md:block h-full mt-32" 
           >
             <CardContainer className="w-full">
               <ProcessCard step={processSteps[3]} index={3} />

@@ -24,6 +24,20 @@ export const CardContainer = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMouseEntered, setIsMouseEntered] = useState(false);
+  const [perspective, setPerspective] = useState("none");
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    setPerspective(window.innerWidth > 768 ? "1000px" : "none");
+
+    const handleResize = () => {
+      setPerspective(window.innerWidth > 768 ? "1000px" : "none");
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
@@ -52,7 +66,7 @@ export const CardContainer = ({
           containerClassName
         )}
         style={{
-          perspective: window?.innerWidth > 768 ? "1000px" : "none",
+          perspective,
         }}
         {...props}
       >
@@ -64,11 +78,10 @@ export const CardContainer = ({
           className="flex items-center justify-center relative transition-all 
           duration-200 ease-linear w-full"
           style={{
-            transformStyle: window?.innerWidth > 768 ? "preserve-3d" : "flat",
-            transform:
-              window?.innerWidth > 768
-                ? `rotateY(0deg) rotateX(0deg)`
-                : "none",
+            transformStyle: isClient ? (window.innerWidth > 768 ? "preserve-3d" : "flat") : "flat",
+            transform: isClient 
+              ? (window.innerWidth > 768 ? "rotateY(0deg) rotateX(0deg)" : "none")
+              : "none",
           }}
         >
           {children}

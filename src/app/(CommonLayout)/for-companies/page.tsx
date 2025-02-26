@@ -1,15 +1,16 @@
+"use client";  
+
 import Banner from '@/components/pages-layout/Company/Banner';
 import CompanyForm from '@/components/pages-layout/Company/CompanyForm';
 import Industries from '@/components/pages-layout/Company/Industries';
 import Services from '@/components/pages-layout/Company/Services';
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Company | Hunting Worker',
-  description: 'Partner with us to find the right workers for your company. Fill out our inquiry form and we will get back to you as soon as possible.',
-};
+import CommonBanner from '@/components/common/CommonBanner';
+import FAQ from '@/components/pages-layout/Company/Fqa';
 
 export default function CompanyPage() {
+  const handleCooperate = () => {
+  };
+
   return (
     <main className="min-h-screen pt-20">
       <CompanyForm />
@@ -23,6 +24,17 @@ export default function CompanyPage() {
         withMargin={true}
       />
       <Services />
+      <CommonBanner
+        title="Using innovations, we maximize your potential."
+        buttonText="Let's Cooperate"
+        onButtonClick={handleCooperate}
+      />
+      <FAQ />
+      <Banner
+        text="Short on time?"
+        subtitle="Contact us now and we will find a solution immediately. info@huntingworker.com"
+        withMargin={true}
+      />
     </main>
   );
 }

@@ -7,6 +7,7 @@ import CommonBanner from "@/components/common/CommonBanner";
 import Solution from "@/components/pages-layout/Home/Solution";
 import RecruitmentCenters from "@/components/pages-layout/Home/RecruitmentCenters";
 import Process from "@/components/pages-layout/Home/Process";
+import FAQ from '@/components/pages-layout/Company/Fqa';
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
         buttonText="Let`s Cooperation"
         onButtonClick={() => {}}
       />
+      <FAQ />
     </main>
   );
 }
