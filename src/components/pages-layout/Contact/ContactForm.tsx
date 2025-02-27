@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 
 export default function ContactForm() {
+  // Update the form fields with proper typing
   const [formData, setFormData] = useState({
     company: '',
     email: '',
@@ -20,10 +21,10 @@ export default function ContactForm() {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value, type } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
+      [name]: type === 'checkbox' ? checked : value
     }));
   };
 
@@ -88,7 +89,7 @@ export default function ContactForm() {
                         type={field.type}
                         id={field.id}
                         name={field.id}
-                        value={formData[field.id as keyof typeof formData]}
+                        value={String(formData[field.id as keyof typeof formData])}
                         onChange={handleChange}
                         className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 text-sm sm:text-base text-black"
                         required
