@@ -9,7 +9,7 @@ interface CursorDotProps {
 const CursorDot = styled.div<CursorDotProps>`
   width: 8px;
   height: 8px;
-  background-color: #404040;
+  background-color: #C0C0C0; // Changed to silver
   border-radius: 50%;
   position: fixed;
   pointer-events: none;
@@ -27,7 +27,7 @@ const CursorDot = styled.div<CursorDotProps>`
 const CursorCircle = styled.div<CursorDotProps>`
   width: 40px;
   height: 40px;
-  border: 2px solid #404044;
+  border: 2px solid #C0C0C0; // Changed to silver
   border-radius: 50%;
   position: fixed;
   pointer-events: none;
@@ -43,16 +43,16 @@ const CursorCircle = styled.div<CursorDotProps>`
       : "scale(1)"};
   opacity: ${(props) =>
     props.$cursorStyle === "pointer"
-      ? "0.5"
+      ? "0.7" // Increased opacity for better visibility
       : props.$cursorStyle === "text"
-      ? "0.4"
+      ? "0.6" // Increased opacity for better visibility
       : props.$cursorStyle === "drag"
-      ? "0.15" // Reduced opacity for drag
-      : "0.2"};
+      ? "0.25" // Reduced opacity for drag
+      : "0.4"}; // Increased base opacity
   background-color: ${(props) =>
-    props.$cursorStyle === "drag" ? "hsl(var(--primary))" : "transparent"};
+    props.$cursorStyle === "drag" ? "#C0C0C0" : "transparent"}; // Changed to silver
   border-color: ${(props) =>
-    props.$cursorStyle === "drag" ? "hsl(var(--primary))" : "#404044"};
+    props.$cursorStyle === "drag" ? "#C0C0C0" : "#C0C0C0"}; // Changed to silver
 
   &::before,
   &::after {
@@ -61,7 +61,7 @@ const CursorCircle = styled.div<CursorDotProps>`
     top: 50%;
     width: 8px;
     height: 2px;
-    background-color: hsl(var(--primary));
+    background-color: #C0C0C0; // Changed to silver
     display: ${(props) => (props.$cursorStyle === "drag" ? "block" : "none")};
   }
 

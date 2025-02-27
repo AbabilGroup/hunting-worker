@@ -44,7 +44,7 @@ const centers = [
 // Memoize CarouselSlide component
 const CarouselSlide = memo(({ center }: { center: typeof centers[0] }) => (
   <CarouselItem className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3 cursor-grab active:cursor-grabbing">
-    <Card className="border-none h-full transition-all duration-300 hover:bg-primary/5 group">
+    <Card className="border-none h-full transition-all duration-300 hover:bg-primary group">
       <CardContent className="p-6">
         <NoSelector>
           <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
@@ -58,10 +58,10 @@ const CarouselSlide = memo(({ center }: { center: typeof centers[0] }) => (
           </div>
         </NoSelector>
         <NoSelector className="mt-6 space-y-3">
-          <h3 className="text-lg sm:text-xl font-semibold text-gray-900 transition-colors duration-300 group-hover:text-primary">
+          <h3 className="text-lg sm:text-xl font-semibold text-black transition-colors duration-300 group-hover:text-white">
             {center.country}
           </h3>
-          <p className="text-gray-600 text-sm leading-relaxed line-clamp-4 transition-colors duration-300 group-hover:text-primary/80">
+          <p className="text-black text-sm leading-relaxed line-clamp-4 transition-colors duration-300 group-hover:text-white/90">
             {center.description}
           </p>
         </NoSelector>
@@ -128,11 +128,11 @@ const RecruitmentCenters = () => {
   ), []);
 
   return (
-    <section className="py-20 overflow-hidden">
+    <section className="py-16 sm:py-20 lg:py-40 overflow-hidden">
       {!isLoading && (
         <div className="container mx-auto px-4">
           <MotionDiv 
-            className="text-center mb-12"
+            className="text-center mb-8 sm:mb-12 lg:mb-20"
             initial="initial"
             animate="animate"
             variants={pageVariants}
@@ -146,7 +146,7 @@ const RecruitmentCenters = () => {
               Recruitment Centers
             </MotionDiv>
             <MotionDiv 
-              className="text-gray-600 max-w-2xl mx-auto mt-4"
+              className="text-black max-w-2xl mx-auto mt-4"
               initial="initial"
               animate="animate"
               variants={itemVariants}

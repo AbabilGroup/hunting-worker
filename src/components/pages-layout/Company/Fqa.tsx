@@ -7,7 +7,7 @@ import { useState } from "react";
 const faqItems = [
   {
     question: "From which countries do you hire workers?",
-    answer: "Following models used in developed Middle Eastern countries, Huntingworker specializes in importing workers from Nepal, the Philippines, and India."
+    answer: "Following models used in developed Middle Eastern countries, Recruitment4u specializes in importing workers from Nepal, the Philippines, and India."
   },
   {
     question: "How long does the process of hiring foreign workers take?",
@@ -46,7 +46,7 @@ const FaqItem = ({ item, isOpen, onToggle }: {
         className="flex justify-between items-center w-full py-4 text-left"
         onClick={onToggle}
       >
-        <span className="text-base md:text-lg font-medium text-gray-900">
+        <span className="text-base md:text-lg font-medium text-black">
           {item.question}
         </span>
         <span className="ml-6 flex-shrink-0">
@@ -63,7 +63,7 @@ const FaqItem = ({ item, isOpen, onToggle }: {
         transition={{ duration: 0.3 }}
         className="overflow-hidden"
       >
-        <p className="pb-4 text-gray-600">
+        <p className="pb-4 text-black">
           {item.answer}
         </p>
       </motion.div>

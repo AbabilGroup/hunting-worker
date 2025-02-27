@@ -49,7 +49,7 @@ const Process = () => {
   const translateTitle = useTransform(scrollYProgress, [0, 1], [100, -80]);
 
   return (
-    <section className="py-8 md:py-16 lg:py-20 overflow-hidden" ref={containerRef}>
+    <section className="py-16 sm:py-20 lg:py-40 overflow-hidden" ref={containerRef}>
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 max-w-7xl mx-auto">
           <div className="relative hidden md:block">
@@ -63,7 +63,7 @@ const Process = () => {
               <h2 className="text-xl lg:text-2xl xl:text-3xl font-bold text-primary mb-4">
                 The Process of Hiring Foreign Workers
               </h2>
-              <p className="text-sm lg:text-base text-gray-600">
+              <p className="text-sm lg:text-base text-primary">
                 A comprehensive approach to international recruitment
               </p>
             </motion.div>
@@ -122,7 +122,7 @@ const Process = () => {
               <h2 className="text-lg sm:text-xl font-bold text-primary mb-1"> 
                 The Process of Hiring Foreign Workers
               </h2>
-              <p className="text-xs sm:text-sm text-gray-600"> 
+              <p className="text-xs sm:text-sm text-black"> 
                 A comprehensive approach to international recruitment
               </p>
             </motion.div>
@@ -135,23 +135,23 @@ const Process = () => {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
-                  className="bg-white rounded-lg p-6 shadow-md"
+                  className="bg-white rounded-lg p-6 shadow-md hover:bg-primary group transition-all duration-300"
                 >
                   <div className="flex flex-col gap-4"> 
                     <div className="flex items-center justify-between"> 
-                      <h3 className="font-semibold text-base text-gray-900"> 
+                      <h3 className="font-semibold text-base text-black group-hover:text-white"> 
                         {step.title}
                       </h3>
-                      <div className="p-3 bg-primary/10 rounded-lg shrink-0"> 
-                        <step.icon className="w-6 h-6 text-primary" /> 
+                      <div className="p-3 bg-primary rounded-lg shrink-0"> 
+                        <step.icon className="w-6 h-6 text-white" /> 
                       </div>
                     </div>
                     
-                    <span className="text-sm bg-primary/10 text-primary px-3 py-1 rounded-full w-fit"> 
+                    <span className="text-sm bg-primary text-white px-3 py-1 rounded-full w-fit"> 
                       {step.duration}
                     </span>
                     
-                    <p className="text-sm text-gray-600 leading-relaxed mt-2"> 
+                    <p className="text-black text-sm leading-relaxed mt-2 group-hover:text-white/90"> 
                       {step.description}
                     </p>
                   </div>
@@ -170,30 +170,30 @@ const ProcessCard = ({ step }: { step: typeof processSteps[0]; index: number }) 
   
   return (
     <CardBody className="bg-white rounded-xl p-4 sm:p-5 lg:p-6 shadow-lg flex flex-col h-full 
-      min-h-[300px] lg:min-h-[320px] relative transition-all duration-300 hover:bg-primary/5 group">
+      min-h-[300px] lg:min-h-[320px] relative transition-all duration-300 
+      hover:bg-primary group">
       {/* Duration badge */}
       <div className="absolute top-3 right-3">
-        <span className="px-2 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium
-          group-hover:bg-primary/20">
+        <span className="px-2 py-1 bg-primary-secondary text-primary rounded-full text-xs font-medium">
           {step.duration}
         </span>
       </div>
 
       {/* Icon and Title Container */}
       <div className="flex flex-col items-start text-left space-y-3">
-        <div className="p-3 bg-primary/10 rounded-xl transform transition-all duration-300 
-          hover:scale-110 group-hover:bg-primary/20">
-          <Icon className="w-6 h-6 text-primary" />
+        <div className="p-3 bg-primary rounded-xl transform transition-all duration-300 
+          hover:scale-110">
+          <Icon className="w-6 h-6 text-white" />
         </div>
-        <h3 className="font-bold text-lg lg:text-xl text-gray-900
-          group-hover:text-primary transition-colors duration-300">
+        <h3 className="font-bold text-lg lg:text-xl text-black
+          group-hover:text-white transition-colors duration-300">
           {step.title}
         </h3>
       </div>
 
       {/* Description */}
-      <p className="text-gray-600 text-sm leading-relaxed mt-3
-        group-hover:text-gray-700 transition-colors duration-300">
+      <p className="text-black text-sm leading-relaxed mt-3
+        group-hover:text-white/90 transition-colors duration-300">
         {step.description}
       </p>
     </CardBody>

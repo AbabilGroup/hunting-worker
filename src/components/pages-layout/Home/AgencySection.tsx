@@ -11,7 +11,7 @@ export default function AgencySection() {
     {
       title: "Find the best candidates.",
       content:
-        "Hunting Worker specializes in helping companies break free from unnecessary geographical limitations—so you can hire the best person in the world, not just the best person nearby.",
+        "Recruitment4u specializes in helping companies break free from unnecessary geographical limitations—so you can hire the best person in the world, not just the best person nearby.",
     },
     {
       title: "Automate business processes.",
@@ -26,11 +26,11 @@ export default function AgencySection() {
   ];
 
   return (
-    <section className="pt-10">
+    <section className="py-16 sm:py-20 lg:py-32 w-full overflow-hidden"> 
       <div className="container mx-auto px-4 py-8 sm:py-12 lg:py-20 max-w-7xl">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
           {/* Icons Section */}
-          <div className="relative order-1 lg:order-1 grid grid-cols-2 gap-4 w-full max-w-md mx-auto">
+          <div className="relative order-1 lg:order-1 grid grid-cols-2 gap-4 w-full max-w-md mx-auto lg:mt-8"> {/* Added top margin for desktop */}
             {/* Top row - Two cards side by side */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -81,9 +81,9 @@ export default function AgencySection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
-            className="space-y-6 sm:space-y-8 order-2 lg:order-2 mt-8 lg:mt-0"
+            className="space-y-6 sm:space-y-8 order-2 lg:order-2 mt-8 lg:mt-12" 
           >
-            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight text-gray-900">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight text-black">
               Modern Methods to Restore the Agency Business&apos;s Former Glory
             </h2>
 
@@ -94,18 +94,18 @@ export default function AgencySection() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
-                  className="border-b border-gray-200"
+                  className="border-b border-black/10"
                 >
                   <button
                     onClick={() => setOpenItem(openItem === index ? -1 : index)}
                     className="w-full py-2 sm:py-3 lg:py-4 flex justify-between items-center group hover:text-primary transition-colors"
                   >
-                    <h3 className="text-sm sm:text-base lg:text-lg font-semibold text-left text-gray-800">
+                    <h3 className="text-sm sm:text-base lg:text-lg font-semibold text-left text-black">
                       {item.title}
                     </h3>
                     <ChevronDown
                       className={cn(
-                        "w-4 h-4 sm:w-5 sm:h-5 transform transition-transform duration-300 text-gray-800",
+                        "w-4 h-4 sm:w-5 sm:h-5 transform transition-transform duration-300 text-black",
                         openItem === index ? "rotate-180" : ""
                       )}
                     />
@@ -119,7 +119,7 @@ export default function AgencySection() {
                         transition={{ duration: 0.3 }}
                         className="overflow-hidden"
                       >
-                        <div className="pb-2 sm:pb-3 lg:pb-4 text-xs sm:text-sm lg:text-base text-gray-500">
+                        <div className="pb-2 sm:pb-3 lg:pb-4 text-xs sm:text-sm lg:text-base text-black">
                           {item.content}
                         </div>
                       </motion.div>

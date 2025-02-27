@@ -28,19 +28,19 @@ export const ImageFrameBorder = () => {
         animate="animate"
         initial={{
           background: `radial-gradient(circle at 50% 50%, 
-            hsl(var(--primary) / 0.8) 0%, 
-            hsl(var(--primary) / 0.4) 100%
+            hsl(171 100% 50% / 0.8) 0%, 
+            hsl(171 100% 50% / 0.4) 100%
           )`,
           borderRadius: "30% 70% 53% 47% / 26% 46% 54% 74%",
         }}
         style={{
           boxShadow: `
-            0 -2vmin 4vmin hsl(var(--primary) / 0.3) inset,
-            0 1vmin 4vmin hsl(var(--primary) / 0.2) inset,
-            0 -2vmin 7vmin hsl(var(--primary) / 0.4) inset,
-            0 0 2vmin hsl(var(--primary) / 0.2),
-            0 0 4vmin hsl(var(--primary) / 0.2),
-            0 0 6vmin hsl(var(--primary) / 0.2)
+            0 -2vmin 4vmin hsl(171 100% 50% / 0.3) inset,
+            0 1vmin 4vmin hsl(171 100% 50% / 0.2) inset,
+            0 -2vmin 7vmin hsl(171 100% 50% / 0.4) inset,
+            0 0 2vmin hsl(171 100% 50% / 0.2),
+            0 0 4vmin hsl(171 100% 50% / 0.2),
+            0 0 6vmin hsl(171 100% 50% / 0.2)
           `,
         }}
         transition={{

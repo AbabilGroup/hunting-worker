@@ -32,7 +32,7 @@ export default function CompanyPage() {
       <FAQ />
       <Banner
         text="Short on time?"
-        subtitle="Contact us now and we will find a solution immediately. info@huntingworker.com"
+        subtitle="Contact us now and we will find a solution immediately. info@recruitment4u.com"
         withMargin={true}
       />
     </main>

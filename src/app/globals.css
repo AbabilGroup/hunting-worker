@@ -1,9 +1,39 @@
+@font-face {
+  font-family: 'Europa';
+  src: url('/fonts/europa-regular-webfont.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Europa';
+  src: url('/fonts/europa-bold-webfont.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Europa';
+  src: url('/fonts/europa-light-webfont.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Color Emoji";
+  src: local("Noto Color Emoji");
+  unicode-range: U+1F1E6-1F1FF;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Europa';
 }
 
 @layer base {
@@ -33,6 +63,8 @@ body {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    --primary-1: 0 0% 0%;      /* #000000 */
+    --primary-2: 171 100% 50%; /* #00FFD9 */
   }
   .dark {
     --background: 240 10% 3.9%;
@@ -59,6 +91,8 @@ body {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    --primary-1: 0 0% 0%;      /* #000000 */
+    --primary-2: 171 100% 50%; /* #00FFD9 */
   }
 }
 
@@ -71,6 +105,20 @@ body {
   }
   .sheet-content {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer base {
+  /* Remove duplicate @font-face declarations and keep only one */
+  @font-face {
+    font-family: "Noto Color Emoji";
+    src: local("Noto Color Emoji"),
+         url('https://cdn.jsdelivr.net/npm/@fontsource/noto-color-emoji@latest/files/noto-color-emoji-normal.woff2') format('woff2');
+    unicode-range: U+1F1E6-1F1FF, U+1F300-1F9FF;
+  }
+
+  .emoji {
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
   }
 }
 
@@ -129,6 +177,17 @@ body {
     transform-style: preserve-3d;
     backface-visibility: hidden;
     transform: translateZ(0);
+  }
+}
+
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }
 

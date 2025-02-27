@@ -105,7 +105,6 @@ const Solution = () => {
     }
   }, [api, isInView]);
 
-  // Optimized scroll handling with IntersectionObserver
   useEffect(() => {
     if (!api) return;
 
@@ -134,24 +133,23 @@ const Solution = () => {
     };
   }, [api, isInView, startAutoplay]);
 
-  // Pre-computed styles
   const cardStyles = useMemo(() => cn(
     "border-none h-full carousel-card",
-    "hover:bg-primary/20",
+    "hover:bg-primary hover:text-white transition-all duration-300", 
     "cursor-grab active:cursor-grabbing",
     "transform-gpu will-change-transform"
   ), []);
 
-  // Memoized card rendering
   const renderCard = useCallback((solution: Solution, index: number) => (
     <CarouselItem
       key={index}
       className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3 will-change-transform"
     >
       <Card className={cardStyles}>
-        <CardContent className="p-6 flex flex-col h-full">
+        <CardContent className="p-6 flex flex-col h-full group">
           <div className="space-y-6 flex-1 flex flex-col">
-            <div className="p-4 rounded-lg bg-primary/10 w-fit">
+            {/* Icon container */}
+            <div className="p-4 rounded-lg bg-primary w-fit">
               <AnimatedSvgIcon
                 iconSrc={solution.icon}
                 className="w-10 h-10 sm:w-12 sm:h-12 relative transform-gpu"
@@ -159,10 +157,12 @@ const Solution = () => {
             </div>
             <NoSelector>
               <div className="flex-1 flex flex-col justify-between space-y-4">
-                <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 line-clamp-2">
+                {/* Title with hover effect */}
+                <h3 className="text-xl sm:text-2xl font-semibold text-black group-hover:text-white transition-colors duration-300 line-clamp-2">
                   {solution.title}
                 </h3>
-                <p className="text-gray-600 leading-relaxed text-sm sm:text-base">
+                {/* Description with hover effect */}
+                <p className="text-black group-hover:text-white/90 transition-colors duration-300 leading-relaxed text-sm sm:text-base">
                   {solution.description}
                 </p>
               </div>
@@ -173,15 +173,16 @@ const Solution = () => {
     </CarouselItem>
   ), [cardStyles]);
 
+  // Update the title section text colors
   return (
     <section 
       ref={sectionRef} 
-      className="py-20 relative transform-gpu"
+      className="py-16 sm:py-20 lg:py-40 relative transform-gpu" 
     >
       <div className="container mx-auto px-4 relative">
         {/* Title with Animation */}
-        <div className="text-center space-y-4 mb-12 relative">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900">
+        <div className="text-center space-y-4 mb-8 sm:mb-12 lg:mb-20 relative"> 
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black">
             Find{" "}
             <AnimatePresence mode="wait">
               {isInView && (
@@ -194,21 +195,21 @@ const Solution = () => {
                     duration: 0.4,
                     ease: "easeOut"
                   }}
-                  className="text-primary inline-block transform-gpu"
+                  className="text-primary-secondary inline-block transform-gpu" 
                 >
                   {titles[titleIndex]}
                 </motion.span>
               )}
             </AnimatePresence>
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-black max-w-2xl mx-auto">
             We have developed several business models that are fully tailored to
             your needs.
           </p>
         </div>
 
         {/* Optimized Solutions Carousel */}
-        <div className="relative px-4 sm:px-12 transform-gpu">
+        <div className="relative px-4 sm:px-12 transform-gpu mt-8 lg:mt-16"> 
           <Carousel
             opts={{
               align: "start",

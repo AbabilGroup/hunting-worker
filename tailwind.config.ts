@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 import tailwindAnimate from "tailwindcss-animate";
 
-export default {
+const config: Config = {
   darkMode: ["class"],
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -22,7 +22,8 @@ export default {
           foreground: "hsl(var(--popover-foreground))",
         },
         primary: {
-          DEFAULT: "hsl(var(--primary))",
+          DEFAULT: "hsl(var(--primary-1))", // Black
+          secondary: "hsl(var(--primary-2))", // Cyan
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
@@ -65,7 +66,12 @@ export default {
         xl: "1280px",
         "2xl": "1536px",
       },
+      fontFamily: {
+        sans: ['Europa', 'Arial', 'sans-serif'],
+      },
     },
   },
   plugins: [tailwindAnimate],
-} satisfies Config;
+};
+
+export default config;

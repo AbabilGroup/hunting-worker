@@ -63,7 +63,7 @@ export default function CompanyForm() {
           >
             <div className="p-6 sm:p-8 lg:p-10">
               <div className="text-center mb-6 sm:mb-8">
-                <p className="text-base sm:text-lg text-gray-600">
+                <p className="text-base sm:text-lg text-black">
                   Send us an inquiry and we will get back to you as soon as possible
                 </p>
               </div>
@@ -71,7 +71,7 @@ export default function CompanyForm() {
               <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                   <div>
-                    <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
+                    <label htmlFor="company" className="block text-sm font-medium text-black mb-1.5 sm:mb-2">
                       Company
                     </label>
                     <input
@@ -86,7 +86,7 @@ export default function CompanyForm() {
                   </div>
 
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
+                    <label htmlFor="email" className="block text-sm font-medium text-black mb-1.5 sm:mb-2">
                       Email Address
                     </label>
                     <input
@@ -101,7 +101,7 @@ export default function CompanyForm() {
                   </div>
 
                   <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
+                    <label htmlFor="phone" className="block text-sm font-medium text-black mb-1.5 sm:mb-2">
                       Phone Number
                     </label>
                     <input
@@ -116,7 +116,7 @@ export default function CompanyForm() {
                   </div>
 
                   <div>
-                    <label htmlFor="jobPositions" className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
+                    <label htmlFor="jobPositions" className="block text-sm font-medium text-black mb-1.5 sm:mb-2">
                       Requested Job Positions
                     </label>
                     <input
@@ -131,7 +131,7 @@ export default function CompanyForm() {
                   </div>
 
                   <div>
-                    <label htmlFor="workersCount" className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
+                    <label htmlFor="workersCount" className="block text-sm font-medium text-black mb-1.5 sm:mb-2">
                       Approximate Number of Workers
                     </label>
                     <input
@@ -147,7 +147,7 @@ export default function CompanyForm() {
                 </div>
 
                 <div>
-                  <label htmlFor="note" className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
+                  <label htmlFor="note" className="block text-sm font-medium text-black mb-1.5 sm:mb-2">
                     Note
                   </label>
                   <textarea
@@ -170,7 +170,7 @@ export default function CompanyForm() {
                     className="mt-1 h-4 w-4 sm:h-5 sm:w-5 rounded border-gray-300 text-primary focus:ring-primary"
                     required
                   />
-                  <label htmlFor="agreeToContact" className="text-xs sm:text-sm text-gray-600">
+                  <label htmlFor="agreeToContact" className="text-xs sm:text-sm text-black">
                     I agree to be contacted regarding my inquiry. More information can be found in our Privacy Policy at the bottom of the page.
                   </label>
                 </div>

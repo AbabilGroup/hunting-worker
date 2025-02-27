@@ -73,7 +73,7 @@ export default function Industries() {
               )}
             >
               <Image
-                src="/teamworks.png"
+                src="/images/teamworks.png"
                 alt="Industry Illustration"
                 fill
                 className="object-contain object-center"
@@ -93,10 +93,10 @@ export default function Industries() {
               className="space-y-8"
             >
               <div className="space-y-4">
-                <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
+                <h2 className="text-3xl sm:text-4xl font-bold text-black">
                   We invest capital to gain in-depth knowledge of every industry.
                 </h2>
-                <p className="text-gray-600">
+                <p className="text-black">
                   With experience in recruitment across numerous industries, we find workers for all the professions you need.
                 </p>
               </div>
@@ -114,13 +114,13 @@ export default function Industries() {
                       onClick={() => setOpenItem(openItem === index ? -1 : index)}
                       className="w-full py-4 flex justify-between items-center group hover:text-primary transition-colors"
                     >
-                      <h3 className="text-lg font-semibold text-left text-gray-800 group-hover:text-primary transition-colors">
+                      <h3 className="text-lg font-semibold text-left text-black group-hover:text-primary transition-colors">
                         {industry.title}
                       </h3>
                       {openItem === index ? (
                         <Minus className="w-5 h-5 text-primary transition-colors" />
                       ) : (
-                        <Plus className="w-5 h-5 text-gray-800 group-hover:text-primary transition-colors" />
+                        <Plus className="w-5 h-5 text-black group-hover:text-primary transition-colors" />
                       )}
                     </button>
                     <AnimatePresence initial={false}>
@@ -132,7 +132,7 @@ export default function Industries() {
                           transition={{ duration: 0.3 }}
                           className="overflow-hidden"
                         >
-                          <div className="pb-4 text-gray-600">
+                          <div className="pb-4 text-black">
                             <p className="leading-relaxed">
                               {industry.content.join(", ")}.
                             </p>
@@ -143,10 +143,6 @@ export default function Industries() {
                   </motion.div>
                 ))}
               </div>
-
-              <p className="text-gray-600 italic">
-                If you have additional questions or need more information, feel free to contact us. We are here to help.
-              </p>
             </motion.div>
           </div>
         </div>

@@ -19,12 +19,12 @@ const services = [
   },
   {
     title: "WELDING AND METALWORKING",
-    description: "Huntingworker is the only agency in the UK that independently conducts testing in home countries and shares results with interested partners. As an agency or contractor, we cover all welding processes and worker qualifications.",
+    description: "Recruitment4u is the only agency in the UK that independently conducts testing in home countries and shares results with interested partners. As an agency or contractor, we cover all welding processes and worker qualifications.",
     icon: Wrench
   },
   {
-    title: "HUNTINGWORKER AGRO",
-    description: "Huntingworker Agro je projekt usmjeren na zadovoljavanje potreba primarnog sektora gospodarstva. Regrituiramo radnike za domaće gospodarstvenike u poljoprivredi, stočarstvu i prehrambenoj industriji.",
+    title: "RECRUITMENT4U AGRO",
+    description: "Recruitment4u Agro je projekt usmjeren na zadovoljavanje potreba primarnog sektora gospodarstva. Regrituiramo radnike za domaće gospodarstvenike u poljoprivredi, stočarstvu i prehrambenoj industriji.",
     icon: Wheat
   },
   {
@@ -33,8 +33,8 @@ const services = [
     icon: UtensilsCrossed
   },
   {
-    title: "HUNTINGWORKER CONSTRUCT",
-    description: "Construction is a sector with the highest demand for foreign workers but also presents the greatest challenge in finding adequate labor. Huntingworker Construct is a project aimed at finding a qualified workforce for this sector.",
+    title: "RECRUITMENT4U CONSTRUCT",
+    description: "Construction is a sector with the highest demand for foreign workers but also presents the greatest challenge in finding adequate labor. Recruitment4u Construct is a project aimed at finding a qualified workforce for this sector.",
     icon: Construction
   },
   {
@@ -50,27 +50,28 @@ interface Service {
   icon: React.ComponentType<{ className?: string }>;
 }
 
-// Update ServiceCard component to have less height
 const ServiceCard = ({ service }: { service: Service }) => (
-  <CardBody className="bg-white rounded-xl p-4 md:p-5 shadow-lg group hover:shadow-xl transition-all duration-300 
-    min-h-[180px] flex flex-col justify-start items-center text-center">
-    {/* Icon Container */}
-    <div className="mb-3">
-      <div className="p-3 bg-primary/10 rounded-lg inline-block
-        group-hover:bg-primary transform transition-all duration-300">
-        <service.icon className="w-5 h-5 text-primary group-hover:text-white transition-colors duration-300" />
+  <CardBody className="bg-white rounded-xl p-6 md:p-8 lg:p-10 shadow-lg group 
+    hover:shadow-xl transition-all duration-300 
+    min-h-[160px] flex flex-col justify-start items-center text-center hover:bg-primary">
+    {/* Icon Container - Added more margin bottom */}
+    <div className="mb-5">
+      <div className="p-4 bg-primary rounded-lg inline-block
+        group-hover:bg-primary-secondary transform transition-all duration-300">
+        <service.icon className="w-6 h-6 text-primary-secondary group-hover:text-white 
+          transition-colors duration-300" />
       </div>
     </div>
     
-    {/* Title */}
-    <h3 className="text-base md:text-lg font-semibold text-gray-800 group-hover:text-primary 
-      transition-colors duration-300 mb-2 px-4">
+    {/* Title - Added more margin and padding */}
+    <h3 className="text-base md:text-lg font-semibold text-black group-hover:text-white 
+      transition-colors duration-300 mb-4 px-6">
       {service.title}
     </h3>
     
-    {/* Description */}
-    <p className="text-xs md:text-sm text-gray-600 leading-relaxed group-hover:text-gray-700
-      max-w-[280px] mx-auto">
+    {/* Description - Added max-width and padding */}
+    <p className="text-xs md:text-sm text-black leading-relaxed group-hover:text-white/90
+      max-w-[300px] mx-auto px-4 transition-colors duration-300">
       {service.description}
     </p>
   </CardBody>
@@ -83,19 +84,19 @@ const Services = () => {
     offset: ["start start", "end start"],
   });
 
-  // Updated transform values to match Process component
+
   const translateLeft = useTransform(scrollYProgress, [0, 1], [100, -80]);
   const translateRight = useTransform(scrollYProgress, [0, 1], [100, -80]);
   const translateMiddle = useTransform(scrollYProgress, [0, 1], [0, 150]);
 
-  // Split services into three columns
+ 
   const [firstColumn, secondColumn, thirdColumn] = [
     services.slice(0, 2),
     services.slice(2, 4),
     services.slice(4)
   ];
 
-  // Add margin to bottom of the section
+
   return (
     <section 
       className="py-8 md:py-16 lg:py-20 pb-32 md:pb-40 lg:pb-48 overflow-hidden" 
@@ -111,7 +112,7 @@ const Services = () => {
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-2 md:mb-3 text-primary">
             Our Services
           </h1>
-          <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto px-4">
+          <p className="text-base md:text-lg text-black max-w-2xl mx-auto px-4">
             We approach each sector differently, developing systems for recruiting,
             selecting, and placing foreign workers.
           </p>
@@ -154,6 +155,7 @@ const Services = () => {
         </div>
 
         {/* Mobile Layout */}
+        {/* Update the mobile layout card styles */}
         <div className="md:hidden space-y-4">
           {services.map((service, index) => (
             <motion.div
@@ -161,18 +163,18 @@ const Services = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: index * 0.1 }}
-              className="bg-white rounded-lg p-4 shadow-md"
+              className="bg-white rounded-lg p-4 shadow-md hover:bg-primary group"
             >
               <div className="flex flex-col gap-3">
                 <div className="flex items-start space-x-3">
-                  <div className="p-3 bg-primary/10 rounded-lg shrink-0">
-                    <service.icon className="w-5 h-5 text-primary" />
+                  <div className="p-3 bg-primary rounded-lg shrink-0 group-hover:bg-primary-secondary">
+                    <service.icon className="w-5 h-5 text-primary-secondary group-hover:text-white" />
                   </div>
-                  <h3 className="text-base font-semibold text-gray-800">
+                  <h3 className="text-base font-semibold text-black group-hover:text-white">
                     {service.title}
                   </h3>
                 </div>
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <p className="text-sm text-black leading-relaxed group-hover:text-white/90">
                   {service.description}
                 </p>
               </div>

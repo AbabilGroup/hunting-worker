@@ -68,7 +68,7 @@ const AnimatedSvgIcon: React.FC<AnimatedSvgIconProps> = ({
         dangerouslySetInnerHTML={{
           __html: svgContent.replace(
             /<svg/,
-            '<svg class="w-full h-full" style="stroke: hsl(var(--primary)); stroke-width: 1.25;"'
+            '<svg class="w-full h-full" style="stroke: hsl(var(--primary-2)); stroke-width: 1.25;"'
           ),
         }}
       />
@@ -82,6 +82,7 @@ const AnimatedSvgIcon: React.FC<AnimatedSvgIconProps> = ({
           stroke-dashoffset: 1000;
           fill: none;
           animation: draw 2s ease-in-out forwards;
+          stroke: hsl(var(--primary-2)); /* Added this line */
         }
 
         @keyframes draw {
@@ -98,6 +99,7 @@ const AnimatedSvgIcon: React.FC<AnimatedSvgIconProps> = ({
           stroke-width: 1.25;
           stroke-linecap: round;
           stroke-linejoin: round;
+          stroke: hsl(var(--primary-2)); /* Added this line */
         }
       `}</style>
     </div>
