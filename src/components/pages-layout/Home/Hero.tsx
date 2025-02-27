@@ -3,35 +3,7 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { ImageFrameBorder } from "@/animation/imageframeborder";
 
-interface HeroProps {
-  language: 'en' | 'hr';
-}
-
-const Hero = ({ language = 'en' }: HeroProps) => { // Add default value
-  // Add this console log to debug
-  console.log('Hero language:', language);
-
-  // Add safety check
-  if (!language) return null;
-
-  const content = {
-    en: {
-      title: "We connect the right workers with the right employers.",
-      description: "Find the perfect match for your business needs or career goals with our comprehensive platform.",
-      workerButton: "Looking for Workers",
-      employerButton: "Looking for an Employer"
-    },
-    hr: {
-      title: "Povezujemo prave radnike s pravim poslodavcima.",
-      description: "Pronađite savršen spoj za vaše poslovne potrebe ili karijerne ciljeve s našom sveobuhvatnom platformom.",
-      workerButton: "Tražim radnike",
-      employerButton: "Tražim poslodavca"
-    }
-  };
-
-  // Add safety check for content access
-  const currentContent = content[language] || content.en;
-
+const Hero = () => {
   return (
     <section className="relative min-h-[calc(100vh-6rem)] flex items-center overflow-hidden py-0 lg:py-0 bg-primary w-screen left-[50%] right-[50%] mx-[-50vw] px-0">
       <div className="container mx-auto px-4 pt-0 sm:pt-8 w-full">
@@ -67,16 +39,17 @@ const Hero = ({ language = 'en' }: HeroProps) => { // Add default value
                 transition={{ duration: 0.5, delay: 0.3 }}
                 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight"
               >
-                {currentContent.title}
+                We connect the right workers with the right employers.
               </motion.h1>
 
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
-                className="text-sm sm:text-base lg:text-lg text-white/80 max-w-xl" 
+                className="text-sm sm:text-base lg:text-lg text-black max-w-xl"
               >
-                {currentContent.description}
+                Find the perfect match for your business needs or career goals
+                with our comprehensive platform.
               </motion.p>
 
               <motion.div
@@ -97,7 +70,7 @@ const Hero = ({ language = 'en' }: HeroProps) => { // Add default value
                     "hover:bg-primary-secondary/90"
                   )}
                 >
-                  {currentContent.workerButton}
+                  Looking for Workers
                 </motion.button>
 
                 {/* Right Button - Primary with Secondary Border */}
@@ -113,7 +86,7 @@ const Hero = ({ language = 'en' }: HeroProps) => { // Add default value
                     "hover:bg-primary-secondary/10"
                   )}
                 >
-                  {currentContent.employerButton}
+                  Looking for an Employer
                 </motion.button>
               </motion.div>
             </motion.div>
